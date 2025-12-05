@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Plus, Search, Heart, User, LogOut, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthRequiredModal from './AuthRequiredModal';
+import NotificationBell from './NotificationBell';
 
 export default function Header() {
     const { user, isLoggedIn, isAdmin, logout, isLoading } = useAuth();
@@ -114,6 +115,7 @@ export default function Header() {
                             {!isLoading && (
                                 isLoggedIn ? (
                                     <div className="flex items-center gap-2">
+                                        <NotificationBell />
                                         <Link
                                             href="/profile"
                                             className="flex items-center gap-2.5 px-3 py-1.5 bg-stone-100/80 rounded-full transition-all duration-300 hover:bg-stone-100 hover:scale-[1.02]"

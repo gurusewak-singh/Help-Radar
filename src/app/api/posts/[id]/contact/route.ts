@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Post from '@/models/Post';
 import User from '@/models/User';
+import Notification from '@/models/Notification';
 import { sendContactEmail } from '@/lib/email';
 
 export async function POST(
@@ -32,7 +33,7 @@ export async function POST(
 
         // Find the post
         const post = await Post.findById(id);
-        
+
         if (!post) {
             return NextResponse.json(
                 { success: false, message: 'Post not found' },
@@ -78,6 +79,24 @@ export async function POST(
             );
         }
 
+        // Create in-app notification for the post creator
+        try {
+            await Notification.create({
+                recipientEmail: creatorEmail,
+                type: 'help_offered',
+                title: `${helperName} wants to help!`,
+                message: message.substring(0, 200) + (message.length > 200 ? '...' : ''),
+                postId: post._id,
+                postTitle: post.title,
+                senderName: helperName,
+                senderEmail: helperEmail,
+                isRead: false
+            });
+        } catch (notifError) {
+            // Log but don't fail if notification creation fails
+            console.error('Notification creation error:', notifError);
+        }
+
         return NextResponse.json(
             { success: true, message: 'Your message has been sent to the post creator!' },
             { status: 200 }
@@ -91,3 +110,4 @@ export async function POST(
         );
     }
 }
+

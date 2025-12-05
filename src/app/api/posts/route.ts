@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Post from '@/models/Post';
+import User from '@/models/User';
+import Notification from '@/models/Notification';
 import { validatePostInput, sanitizeText, checkRateLimit } from '@/lib/validators';
 import { analyzePriority } from '@/lib/priorityEngine';
 import { uploadImage, UploadResult } from '@/lib/cloudinary';
+import { sendNewPostNotificationEmail } from '@/lib/email';
 
 // GET /api/posts - List posts with filters, search, and pagination
 export async function GET(request: NextRequest) {
@@ -204,6 +207,62 @@ export async function POST(request: NextRequest) {
         }
 
         await post.save();
+
+        // Notify users about the new post
+        try {
+            const creatorName = sanitizedData.contact?.name || 'A community member';
+            const creatorEmail = sanitizedData.contact?.email?.toLowerCase();
+
+            // Find all users to notify (all registered users except the creator)
+            // For High urgency, notify everyone. For Medium/Low, just create in-app notifications.
+            const allUsers = await User.find({}).select('email name notificationPreferences').lean();
+
+            // Create in-app notifications for all users
+            for (const user of allUsers) {
+                // Don't notify the post creator
+                if (user.email.toLowerCase() === creatorEmail) continue;
+
+                // Create in-app notification for everyone
+                await Notification.create({
+                    recipientEmail: user.email,
+                    type: 'new_post',
+                    title: sanitizedData.urgency === 'High'
+                        ? `🚨 URGENT: ${sanitizedData.category} in ${sanitizedData.city}`
+                        : `New ${sanitizedData.category} in ${sanitizedData.city}`,
+                    message: sanitizedData.title.substring(0, 150),
+                    postId: post._id,
+                    postTitle: sanitizedData.title,
+                    senderName: creatorName,
+                    urgency: sanitizedData.urgency,
+                    isRead: false
+                });
+
+                // Send email only for High urgency posts and if user has email notifications enabled
+                if (sanitizedData.urgency === 'High' && user.notificationPreferences?.email !== false) {
+                    try {
+                        await sendNewPostNotificationEmail({
+                            recipientEmail: user.email,
+                            recipientName: user.name,
+                            postTitle: sanitizedData.title,
+                            postDescription: sanitizedData.description,
+                            category: sanitizedData.category,
+                            urgency: sanitizedData.urgency,
+                            city: sanitizedData.city,
+                            area: sanitizedData.area,
+                            postId: post._id.toString(),
+                            creatorName
+                        });
+                    } catch (emailError) {
+                        console.error(`Failed to send email to ${user.email}:`, emailError);
+                    }
+                }
+            }
+
+            console.log(`Notified ${allUsers.length - 1} users about new post`);
+        } catch (notifyError) {
+            console.error('Failed to notify users:', notifyError);
+            // Don't fail the post creation if notifications fail
+        }
 
         return NextResponse.json({ post, message: 'Post created successfully' }, { status: 201 });
     } catch (error) {
