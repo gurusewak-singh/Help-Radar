@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import AuthRequiredModal from './AuthRequiredModal';
 
 export default function Header() {
+    const { user, isLoggedIn, isLoading } = useAuth();
     const { user, isLoggedIn, isAdmin, logout, isLoading } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -122,6 +123,10 @@ export default function Header() {
                                                 <User className="w-3.5 h-3.5 text-white" />
                                             </div>
                                             <span className="text-sm font-medium text-stone-700">{user?.name}</span>
+                                        </div>
+                                        <Link
+                                            href="/logout"
+                                            className="px-3 py-2 text-sm font-medium text-stone-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-all flex items-center gap-1.5"
                                         </Link>
                                         <button
                                             onClick={logout}
@@ -129,6 +134,9 @@ export default function Header() {
                                             title="Logout"
                                         >
                                             <LogOut className="w-4 h-4" />
+                                            Logout
+                                        </Link>
+                                    </>
                                         </button>
                                     </div>
                                 ) : (
@@ -244,10 +252,16 @@ export default function Header() {
                                             <p className="text-xs text-stone-400">{user?.email}</p>
                                         </div>
                                     </div>
+                                    <Link
+                                        href="/logout"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block w-full px-4 py-3 text-sm font-medium text-left text-red-600 hover:bg-red-50 transition-colors"
                                     <button
                                         onClick={() => { logout(); setIsMenuOpen(false); }}
                                         className="flex items-center gap-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300"
                                     >
+                                        Log out
+                                    </Link>
                                         <LogOut className="w-4 h-4" />
                                         <span className="font-medium">Log out</span>
                                     </button>

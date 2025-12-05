@@ -1,13 +1,76 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Heart, AlertCircle, Check, Sparkles, Users, Shield, Zap } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function RegisterPage() {
+// InputField component defined outside to prevent re-creation on every render
+interface InputFieldProps {
+    id: string;
+    name: string;
+    type?: string;
+    label: string | React.ReactNode;
+    placeholder: string;
+    icon: React.ElementType;
+    value: string;
+    required?: boolean;
+    suffix?: React.ReactNode;
+    focusedField: string | null;
+    onFocus: (name: string) => void;
+    onBlur: () => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+function InputField({
+    id,
+    name,
+    type = 'text',
+    label,
+    placeholder,
+    icon: Icon,
+    value,
+    required = true,
+    suffix,
+    focusedField,
+    onFocus,
+    onBlur,
+    onChange
+}: InputFieldProps) {
+    return (
+        <div>
+            <label htmlFor={id} className="block text-sm font-medium text-stone-700 mb-2">
+                {label}
+            </label>
+            <div className={`relative rounded-xl transition-all duration-200 ${focusedField === name ? 'ring-2 ring-teal-500/20' : ''
+                }`}>
+                <div className={`absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${focusedField === name ? 'bg-teal-100' : 'bg-stone-100'
+                    }`}>
+                    <Icon className={`w-4 h-4 transition-colors ${focusedField === name ? 'text-teal-600' : 'text-stone-400'
+                        }`} />
+                </div>
+                <input
+                    id={id}
+                    name={name}
+                    type={type}
+                    value={value}
+                    onChange={onChange}
+                    onFocus={() => onFocus(name)}
+                    onBlur={onBlur}
+                    placeholder={placeholder}
+                    className="w-full pl-14 pr-4 py-3.5 bg-white border border-stone-200 rounded-xl text-stone-900 placeholder-stone-400 focus:outline-none focus:border-teal-500 transition-colors"
+                    required={required}
+                />
+                {suffix}
+            </div>
+        </div>
+    );
+}
+
+function RegisterContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { register, isLoggedIn } = useAuth();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -24,9 +87,17 @@ export default function RegisterPage() {
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
+    const returnUrl = searchParams.get('returnUrl') || '/requests';
+
     // Redirect if already logged in
+    useEffect(() => {
+        if (isLoggedIn) {
+            router.push(returnUrl);
+        }
+    }, [isLoggedIn, router, returnUrl]);
+
+    // Show nothing while redirecting
     if (isLoggedIn) {
-        router.push('/');
         return null;
     }
 
@@ -93,7 +164,7 @@ export default function RegisterPage() {
         try {
             const success = await register(formData.email, formData.password, formData.name);
             if (success) {
-                router.push('/');
+                router.push(returnUrl);
             } else {
                 setError('Registration failed. Please try again.');
             }
@@ -103,55 +174,6 @@ export default function RegisterPage() {
             setIsLoading(false);
         }
     };
-
-    const InputField = ({
-        id,
-        name,
-        type = 'text',
-        label,
-        placeholder,
-        icon: Icon,
-        value,
-        required = true,
-        suffix
-    }: {
-        id: string;
-        name: string;
-        type?: string;
-        label: string | React.ReactNode;
-        placeholder: string;
-        icon: React.ElementType;
-        value: string;
-        required?: boolean;
-        suffix?: React.ReactNode;
-    }) => (
-        <div>
-            <label htmlFor={id} className="block text-sm font-medium text-stone-700 mb-2">
-                {label}
-            </label>
-            <div className={`relative rounded-xl transition-all duration-200 ${focusedField === name ? 'ring-2 ring-teal-500/20' : ''
-                }`}>
-                <div className={`absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${focusedField === name ? 'bg-teal-100' : 'bg-stone-100'
-                    }`}>
-                    <Icon className={`w-4 h-4 transition-colors ${focusedField === name ? 'text-teal-600' : 'text-stone-400'
-                        }`} />
-                </div>
-                <input
-                    id={id}
-                    name={name}
-                    type={type}
-                    value={value}
-                    onChange={handleChange}
-                    onFocus={() => setFocusedField(name)}
-                    onBlur={() => setFocusedField(null)}
-                    placeholder={placeholder}
-                    className="w-full pl-14 pr-4 py-3.5 bg-white border border-stone-200 rounded-xl text-stone-900 placeholder-stone-400 focus:outline-none focus:border-teal-500 transition-colors"
-                    required={required}
-                />
-                {suffix}
-            </div>
-        </div>
-    );
 
     return (
         <div className="min-h-[calc(100vh-64px)] flex bg-stone-50">
@@ -264,6 +286,10 @@ export default function RegisterPage() {
                                 placeholder="John Doe"
                                 icon={User}
                                 value={formData.name}
+                                focusedField={focusedField}
+                                onFocus={setFocusedField}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={handleChange}
                             />
 
                             <InputField
@@ -274,6 +300,10 @@ export default function RegisterPage() {
                                 placeholder="you@example.com"
                                 icon={Mail}
                                 value={formData.email}
+                                focusedField={focusedField}
+                                onFocus={setFocusedField}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={handleChange}
                             />
 
                             <InputField
@@ -285,6 +315,10 @@ export default function RegisterPage() {
                                 icon={Phone}
                                 value={formData.phone}
                                 required={false}
+                                focusedField={focusedField}
+                                onFocus={setFocusedField}
+                                onBlur={() => setFocusedField(null)}
+                                onChange={handleChange}
                             />
 
                             <button
@@ -481,5 +515,13 @@ export default function RegisterPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function RegisterPage() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-stone-50"><div className="w-10 h-10 border-3 border-stone-200 border-t-teal-600 rounded-full animate-spin"></div></div>}>
+            <RegisterContent />
+        </Suspense>
     );
 }

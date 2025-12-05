@@ -7,10 +7,14 @@ interface AuthRequiredModalProps {
     isOpen: boolean;
     onClose: () => void;
     message?: string;
+    returnUrl?: string;
 }
 
-export default function AuthRequiredModal({ isOpen, onClose, message }: AuthRequiredModalProps) {
+export default function AuthRequiredModal({ isOpen, onClose, message, returnUrl }: AuthRequiredModalProps) {
     if (!isOpen) return null;
+
+    const loginUrl = returnUrl ? `/login?returnUrl=${encodeURIComponent(returnUrl)}` : '/login';
+    const registerUrl = returnUrl ? `/register?returnUrl=${encodeURIComponent(returnUrl)}` : '/register';
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -43,7 +47,7 @@ export default function AuthRequiredModal({ isOpen, onClose, message }: AuthRequ
                 {/* Content */}
                 <div className="p-6 space-y-4">
                     <Link
-                        href="/login"
+                        href={loginUrl}
                         onClick={onClose}
                         className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-stone-900 text-white font-semibold rounded-xl hover:bg-stone-800 transition-colors"
                     >
@@ -52,7 +56,7 @@ export default function AuthRequiredModal({ isOpen, onClose, message }: AuthRequ
                     </Link>
 
                     <Link
-                        href="/register"
+                        href={registerUrl}
                         onClick={onClose}
                         className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors"
                     >

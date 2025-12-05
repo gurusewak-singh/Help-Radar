@@ -55,6 +55,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const login = async (email: string, password: string): Promise<boolean> => {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.user) {
+                const authenticatedUser: User = {
+                    id: data.user.id,
+                    email: data.user.email,
+                    name: data.user.name
+                };
+                setUser(authenticatedUser);
+                localStorage.setItem('helpradar_user', JSON.stringify(authenticatedUser));
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Login error:', error);
+            return false;
+        }
         // Mock login - in production, this would call an API
         if (email && password) {
             const isAdmin = checkIsAdmin(email);
@@ -72,6 +102,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const register = async (email: string, password: string, name: string): Promise<boolean> => {
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, name }),
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.user) {
+                const registeredUser: User = {
+                    id: data.user.id,
+                    email: data.user.email,
+                    name: data.user.name
+                };
+                setUser(registeredUser);
+                localStorage.setItem('helpradar_user', JSON.stringify(registeredUser));
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Registration error:', error);
+            return false;
+        }
         // Mock registration - in production, this would call an API
         if (email && password && name) {
             const isAdmin = checkIsAdmin(email);

@@ -1,0 +1,4 @@
+Login without registering is happening
+on clicking logout logout is not called
+filters are not working
+mobile number field in /register is not working properly
