@@ -6,7 +6,8 @@ import Link from 'next/link';
 import PostCard from '@/components/PostCard';
 import FiltersBar, { Filters } from '@/components/FiltersBar';
 import Pagination from '@/components/Pagination';
-import { Heart, HelpCircle, Search, Gift, Plus, ChevronRight, Users, Shield, Zap } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Heart, HelpCircle, Search, Gift, Plus, ChevronRight, Users, Shield, Zap, ArrowLeft } from 'lucide-react';
 
 interface Post {
     _id: string;
@@ -47,6 +48,7 @@ const CATEGORIES = [
 
 function RequestsContent() {
     const searchParams = useSearchParams();
+    const { user } = useAuth();
     const [posts, setPosts] = useState<Post[]>([]);
     const [stats, setStats] = useState<Stats | null>(null);
     const [loading, setLoading] = useState(true);
@@ -60,6 +62,9 @@ function RequestsContent() {
         sort: searchParams.get('sort') || 'recent'
     });
 
+    // Check if viewing only user's own requests
+    const showMine = searchParams.get('mine') === 'true';
+
     const fetchPosts = useCallback(async () => {
         setLoading(true);
         try {
@@ -72,6 +77,11 @@ function RequestsContent() {
             params.set('page', currentPage.toString());
             params.set('limit', '10');
 
+            // If showing user's own posts, add userEmail filter
+            if (showMine && user?.email) {
+                params.set('userEmail', user.email);
+            }
+
             const res = await fetch(`/api/posts?${params.toString()}`);
             if (res.ok) {
                 const data = await res.json();
@@ -83,12 +93,16 @@ function RequestsContent() {
                 if (filters.category) filteredPosts = filteredPosts.filter(p => p.category === filters.category);
                 if (filters.urgency) filteredPosts = filteredPosts.filter(p => p.urgency === filters.urgency);
                 if (filters.q) { const q = filters.q.toLowerCase(); filteredPosts = filteredPosts.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)); }
+                // Filter by user email for mock data too
+                if (showMine && user?.email) {
+                    filteredPosts = filteredPosts.filter(p => p.contact?.email === user.email);
+                }
                 setPosts(filteredPosts);
                 setTotalPages(1);
             }
-        } catch { setPosts(MOCK_POSTS); setTotalPages(1); }
+        } catch { setPosts(showMine ? [] : MOCK_POSTS); setTotalPages(1); }
         finally { setLoading(false); }
-    }, [filters, currentPage]);
+    }, [filters, currentPage, showMine, user?.email]);
 
     const fetchStats = useCallback(async () => {
         try { const res = await fetch('/api/stats'); setStats(res.ok ? await res.json() : MOCK_STATS); }
@@ -103,9 +117,20 @@ function RequestsContent() {
             {/* Header */}
             <div className="bg-white border-b border-stone-200">
                 <div className="max-w-6xl mx-auto px-6 py-6">
+                    {showMine && (
+                        <Link
+                            href="/profile"
+                            className="inline-flex items-center gap-2 text-stone-500 hover:text-teal-600 transition-colors text-sm mb-4"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to Profile
+                        </Link>
+                    )}
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-bold text-stone-900">All Requests</h1>
+                            <h1 className="text-2xl font-bold text-stone-900">
+                                {showMine ? 'My Requests' : 'All Requests'}
+                            </h1>
                             <p className="text-stone-500 mt-1">{loading ? 'Loading...' : `${posts.length} results found`}</p>
                         </div>
                         <Link

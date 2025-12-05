@@ -21,6 +21,8 @@ export async function GET(request: NextRequest) {
         const lat = parseFloat(searchParams.get('lat') || '');
         const lng = parseFloat(searchParams.get('lng') || '');
         const status = searchParams.get('status') || 'active';
+        const userId = searchParams.get('userId'); // Filter by creator
+        const userEmail = searchParams.get('userEmail'); // Filter by creator's email (for contact.email match)
 
         // Build filter object
         const filter: Record<string, unknown> = { status };
@@ -28,6 +30,8 @@ export async function GET(request: NextRequest) {
         if (city) filter.city = { $regex: new RegExp(city, 'i') };
         if (category) filter.category = category;
         if (urgency) filter.urgency = urgency;
+        if (userId) filter.createdBy = userId;
+        if (userEmail) filter['contact.email'] = userEmail;
 
         // Text search
         if (q) {
@@ -187,7 +191,7 @@ export async function POST(request: NextRequest) {
         console.log('Creating post with data:', JSON.stringify(postData, null, 2));
 
         const post = new Post(postData);
-        
+
         // Validate the post before saving
         const validationError = post.validateSync();
         if (validationError) {
