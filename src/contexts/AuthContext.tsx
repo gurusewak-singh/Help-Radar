@@ -37,33 +37,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const login = async (email: string, password: string): Promise<boolean> => {
-        // Mock login - in production, this would call an API
-        if (email && password) {
-            const mockUser: User = {
-                id: 'user_' + Date.now(),
-                email,
-                name: email.split('@')[0]
-            };
-            setUser(mockUser);
-            localStorage.setItem('helpradar_user', JSON.stringify(mockUser));
-            return true;
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.user) {
+                const authenticatedUser: User = {
+                    id: data.user.id,
+                    email: data.user.email,
+                    name: data.user.name
+                };
+                setUser(authenticatedUser);
+                localStorage.setItem('helpradar_user', JSON.stringify(authenticatedUser));
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Login error:', error);
+            return false;
         }
-        return false;
     };
 
     const register = async (email: string, password: string, name: string): Promise<boolean> => {
-        // Mock registration - in production, this would call an API
-        if (email && password && name) {
-            const mockUser: User = {
-                id: 'user_' + Date.now(),
-                email,
-                name
-            };
-            setUser(mockUser);
-            localStorage.setItem('helpradar_user', JSON.stringify(mockUser));
-            return true;
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, name }),
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            const data = await response.json();
+            
+            if (data.success && data.user) {
+                const registeredUser: User = {
+                    id: data.user.id,
+                    email: data.user.email,
+                    name: data.user.name
+                };
+                setUser(registeredUser);
+                localStorage.setItem('helpradar_user', JSON.stringify(registeredUser));
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Registration error:', error);
+            return false;
         }
-        return false;
     };
 
     const logout = () => {

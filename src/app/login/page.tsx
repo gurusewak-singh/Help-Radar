@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Heart, AlertCircle, Sparkles } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function LoginPage() {
+function LoginContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { login, isLoggedIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,9 +17,17 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
+    const returnUrl = searchParams.get('returnUrl') || '/requests';
+
     // Redirect if already logged in
+    useEffect(() => {
+        if (isLoggedIn) {
+            router.push(returnUrl);
+        }
+    }, [isLoggedIn, router, returnUrl]);
+
+    // Show nothing while redirecting
     if (isLoggedIn) {
-        router.push('/');
         return null;
     }
 
@@ -30,7 +39,7 @@ export default function LoginPage() {
         try {
             const success = await login(email, password);
             if (success) {
-                router.push('/');
+                router.push(returnUrl);
             } else {
                 setError('Invalid email or password');
             }
@@ -274,5 +283,13 @@ export default function LoginPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-stone-50"><div className="w-10 h-10 border-3 border-stone-200 border-t-teal-600 rounded-full animate-spin"></div></div>}>
+            <LoginContent />
+        </Suspense>
     );
 }

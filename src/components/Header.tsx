@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import AuthRequiredModal from './AuthRequiredModal';
 
 export default function Header() {
-    const { user, isLoggedIn, logout, isLoading } = useAuth();
+    const { user, isLoggedIn, isLoading } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isScrolled, setIsScrolled] = useState(false);
@@ -100,13 +100,13 @@ export default function Header() {
                                             </div>
                                             <span className="text-sm font-medium text-stone-700">{user?.name}</span>
                                         </div>
-                                        <button
-                                            onClick={logout}
+                                        <Link
+                                            href="/logout"
                                             className="px-3 py-2 text-sm font-medium text-stone-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-all flex items-center gap-1.5"
                                         >
                                             <LogOut className="w-4 h-4" />
                                             Logout
-                                        </button>
+                                        </Link>
                                     </>
                                 ) : (
                                     <>
@@ -196,12 +196,13 @@ export default function Header() {
                                         </div>
                                         <span className="text-sm font-medium text-stone-700">{user?.name}</span>
                                     </div>
-                                    <button
-                                        onClick={() => { logout(); setIsMenuOpen(false); }}
+                                    <Link
+                                        href="/logout"
+                                        onClick={() => setIsMenuOpen(false)}
                                         className="block w-full px-4 py-3 text-sm font-medium text-left text-red-600 hover:bg-red-50 transition-colors"
                                     >
                                         Log out
-                                    </button>
+                                    </Link>
                                 </>
                             ) : (
                                 <>

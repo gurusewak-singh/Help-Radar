@@ -3,12 +3,17 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Heart, CheckCircle, ArrowRight, Home, LogIn, Shield, Clock, Sparkles } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LogoutPage() {
     const [stage, setStage] = useState<'loading' | 'success'>('loading');
     const [progress, setProgress] = useState(0);
+    const { logout } = useAuth();
 
     useEffect(() => {
+        // Actually perform the logout
+        logout();
+
         const progressInterval = setInterval(() => {
             setProgress(prev => {
                 if (prev >= 100) {
@@ -27,7 +32,7 @@ export default function LogoutPage() {
             clearTimeout(timer);
             clearInterval(progressInterval);
         };
-    }, []);
+    }, [logout]);
 
     return (
         <div className="min-h-[calc(100vh-64px)] flex bg-stone-50">
