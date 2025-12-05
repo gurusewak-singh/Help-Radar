@@ -1,4 +1,10 @@
-Login without registering is happening
-on clicking logout logout is not called
-filters are not working
-mobile number field in /register is not working properly
+1 On admin login page is needing to be refreshed for admin section to be visible -> !Done
+2 Settings are to be removed -> !Done
+3 in profile in My requests all requests are visible instead of only mine -> Suar !Done
+4 Create a terms and conditions page -> !Done
+5 Footer links aren't working (browse requests, privacy, terms, contact) -> Suar !Done
+6 filters css is to be done
+7 Google OAuth -> Guru !Done
+8 Forgot password functionality to be added -> !Done
+9 Add email functionality for other users send mail for helping out -> Suar
+10 Add notifications functionality when other users send mail for helping out -> Suar

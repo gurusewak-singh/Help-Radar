@@ -99,7 +99,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
             {/* Header */}
             <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-stone-100">
                 <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-stone-500 hover:text-stone-900 text-sm">
+                    <Link href="/requests" className="flex items-center gap-2 text-stone-500 hover:text-stone-900 text-sm">
                         <ArrowLeft className="w-4 h-4" /> Back to requests
                     </Link>
                     <div className="flex gap-1">

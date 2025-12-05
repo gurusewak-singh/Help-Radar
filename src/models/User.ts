@@ -4,6 +4,7 @@ export interface IUser extends Document {
     name: string;
     email: string;
     password?: string;
+    googleId?: string;
     image?: string;
     role: 'user' | 'admin';
     trustScore: number;
@@ -14,6 +15,8 @@ export interface IUser extends Document {
         bloodAlerts: boolean;
         helpAlerts: boolean;
     };
+    resetOtp?: string;
+    resetOtpExpiry?: Date;
     createdAt: Date;
     lastLogin?: Date;
 }
@@ -42,6 +45,18 @@ const UserSchema = new Schema<IUser>({
         type: String,
         minlength: [6, 'Password must be at least 6 characters'],
         select: false // Don't include in queries by default
+    },
+    googleId: {
+        type: String,
+        sparse: true
+    },
+    resetOtp: {
+        type: String,
+        select: false
+    },
+    resetOtpExpiry: {
+        type: Date,
+        select: false
     },
     image: {
         type: String

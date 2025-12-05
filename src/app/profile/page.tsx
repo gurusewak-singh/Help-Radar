@@ -98,13 +98,13 @@ export default function ProfilePage() {
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-stone-300" />
                             </Link>
-                            <Link href="/profile/settings" className="flex items-center justify-between px-6 py-5 hover:bg-stone-50 border-b border-stone-50">
+                            {/* <Link href="/profile/settings" className="flex items-center justify-between px-6 py-5 hover:bg-stone-50 border-b border-stone-50">
                                 <div className="flex items-center gap-3">
                                     <Settings className="w-4 h-4 text-stone-400" />
                                     <span className="text-sm text-stone-600">Settings</span>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-stone-300" />
-                            </Link>
+                            </Link> */}
                             <button
                                 onClick={() => { logout(); router.push('/'); }}
                                 className="flex items-center gap-3 w-full px-6 py-5 text-left text-red-500 hover:bg-red-50"
