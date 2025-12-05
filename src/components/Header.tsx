@@ -123,13 +123,13 @@ export default function Header() {
                                             </div>
                                             <span className="text-sm font-medium text-stone-700">{user?.name}</span>
                                         </Link>
-                                        <button
-                                            onClick={logout}
+                                        <Link
+                                            href="/logout"
                                             className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-300"
                                             title="Logout"
                                         >
                                             <LogOut className="w-4 h-4" />
-                                        </button>
+                                        </Link>
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-2">
@@ -244,13 +244,14 @@ export default function Header() {
                                             <p className="text-xs text-stone-400">{user?.email}</p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => { logout(); setIsMenuOpen(false); }}
+                                    <Link
+                                        href="/logout"
+                                        onClick={() => setIsMenuOpen(false)}
                                         className="flex items-center gap-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300"
                                     >
                                         <LogOut className="w-4 h-4" />
                                         <span className="font-medium">Log out</span>
-                                    </button>
+                                    </Link>
                                 </>
                             ) : (
                                 <div className="px-4 space-y-2">
