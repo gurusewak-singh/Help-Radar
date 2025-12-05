@@ -67,7 +67,7 @@ interface ContactEmailParams {
 
 export async function sendContactEmail(params: ContactEmailParams) {
     const { postCreatorEmail, postCreatorName, postTitle, helperName, helperEmail, helperPhone, message } = params;
-    
+
     const mailOptions = {
         from: `"HelpRadar" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
         to: postCreatorEmail,
@@ -137,3 +137,95 @@ export async function sendContactEmail(params: ContactEmailParams) {
 export function generateOtp(): string {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
+
+interface NewPostEmailParams {
+    recipientEmail: string;
+    recipientName: string;
+    postTitle: string;
+    postDescription: string;
+    category: string;
+    urgency: string;
+    city: string;
+    area?: string;
+    postId: string;
+    creatorName: string;
+}
+
+export async function sendNewPostNotificationEmail(params: NewPostEmailParams) {
+    const { recipientEmail, recipientName, postTitle, postDescription, category, urgency, city, area, postId, creatorName } = params;
+
+    const urgencyColors = {
+        High: '#dc2626',
+        Medium: '#f59e0b',
+        Low: '#0d9488'
+    };
+
+    const urgencyLabels = {
+        High: '🚨 URGENT',
+        Medium: '⚠️ Medium Priority',
+        Low: '📢 New Request'
+    };
+
+    const urgencyColor = urgencyColors[urgency as keyof typeof urgencyColors] || '#0d9488';
+    const urgencyLabel = urgencyLabels[urgency as keyof typeof urgencyLabels] || '📢 New Request';
+
+    const mailOptions = {
+        from: `"HelpRadar" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
+        to: recipientEmail,
+        subject: `${urgencyLabel}: ${category} in ${city}`,
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #0d9488; margin: 0;">HelpRadar</h1>
+                    <p style="color: #78716c; margin-top: 5px;">New Community Request</p>
+                </div>
+                
+                <p style="color: #44403c; font-size: 16px;">Hi ${recipientName},</p>
+                
+                <p style="color: #44403c; font-size: 16px;">
+                    A new request has been posted in your area that might need your attention:
+                </p>
+                
+                <div style="background: linear-gradient(135deg, ${urgencyColor}20, ${urgencyColor}10); border: 2px solid ${urgencyColor}; padding: 20px; border-radius: 12px; margin: 25px 0;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="background: ${urgencyColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                            ${urgencyLabel}
+                        </span>
+                        <span style="color: #78716c; font-size: 12px;">${category}</span>
+                    </div>
+                    <h2 style="color: #44403c; font-size: 18px; margin: 0 0 10px 0;">${postTitle}</h2>
+                    <p style="color: #57534e; font-size: 14px; line-height: 1.6; margin: 0;">
+                        ${postDescription.substring(0, 200)}${postDescription.length > 200 ? '...' : ''}
+                    </p>
+                    <p style="color: #a8a29e; font-size: 12px; margin-top: 15px;">
+                        📍 ${area ? `${area}, ` : ''}${city} • Posted by ${creatorName}
+                    </p>
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/post/${postId}" 
+                       style="display: inline-block; background: linear-gradient(135deg, #0d9488, #059669); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                        View Request & Offer Help
+                    </a>
+                </div>
+                
+                <p style="color: #78716c; font-size: 14px;">
+                    You're receiving this because you've subscribed to ${category} alerts in ${city}.
+                </p>
+                
+                <hr style="border: none; border-top: 1px solid #e7e5e4; margin: 30px 0;" />
+                
+                <p style="color: #a8a29e; font-size: 12px; text-align: center;">
+                    © ${new Date().getFullYear()} HelpRadar. Connecting communities.
+                    <br />
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/profile/settings" style="color: #0d9488;">
+                        Manage notification preferences
+                    </a>
+                </p>
+            </div>
+        `,
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
