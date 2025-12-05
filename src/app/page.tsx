@@ -6,8 +6,7 @@ import Link from 'next/link';
 import PostCard from '@/components/PostCard';
 import FiltersBar, { Filters } from '@/components/FiltersBar';
 import Pagination from '@/components/Pagination';
-import StatsCard from '@/components/StatsCard';
-import { Heart, HelpCircle, Search, Gift, TrendingUp, Eye, Clock, AlertTriangle, Plus, Loader2 } from 'lucide-react';
+import { Heart, HelpCircle, Search, Gift, Plus, MapPin, TrendingUp, Clock, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
 
 interface Post {
   _id: string;
@@ -17,190 +16,34 @@ interface Post {
   city: string;
   area?: string;
   urgency: 'Low' | 'Medium' | 'High';
-  contact?: {
-    name?: string;
-    phone?: string;
-    email?: string;
-  };
+  contact?: { name?: string; phone?: string; email?: string };
   images?: Array<{ url: string }>;
   views: number;
   createdAt: string;
 }
 
 interface Stats {
-  overview: {
-    totalActive: number;
-    totalResolved: number;
-    totalViews: number;
-    recentPosts: number;
-    highUrgencyCount: number;
-  };
+  overview: { totalActive: number; totalViews: number; recentPosts: number; highUrgencyCount: number };
   categoryCounts: Record<string, number>;
 }
 
-// Mock data for demo
 const MOCK_POSTS: Post[] = [
-  {
-    _id: '1',
-    title: 'A+ Blood Donor Urgently Required - City Hospital',
-    description: 'My father needs A+ blood urgently for surgery at City Hospital, Sector 21. Please help if you can donate. Contact immediately.',
-    category: 'Blood Needed',
-    city: 'Delhi',
-    area: 'Sector 21',
-    urgency: 'High',
-    contact: { name: 'Rahul Sharma', phone: '9876543210', email: 'rahul@email.com' },
-    views: 156,
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '2',
-    title: 'Lost Black Wallet Near MG Road Metro Station',
-    description: 'Lost my black leather wallet containing ID cards and some cash near MG Road Metro Station entrance. Reward offered for return.',
-    category: 'Item Lost',
-    city: 'Bangalore',
-    area: 'MG Road',
-    urgency: 'Medium',
-    contact: { name: 'Priya Patel', phone: '9123456789' },
-    views: 89,
-    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '3',
-    title: 'Senior Citizen Needs Grocery Pickup Assistance',
-    description: 'Elderly person living alone needs help with weekly grocery shopping. Cannot travel due to mobility issues. Any volunteer welcome.',
-    category: 'Help Needed',
-    city: 'Mumbai',
-    area: 'Andheri West',
-    urgency: 'Medium',
-    contact: { name: 'Meera Aunty', phone: '9988776655' },
-    views: 234,
-    createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '4',
-    title: 'Free Tutoring for Underprivileged Children',
-    description: 'Offering free Math and Science tutoring for children from underprivileged backgrounds. Available on weekends. Experience in teaching for 5 years.',
-    category: 'Offer',
-    city: 'Chennai',
-    area: 'T. Nagar',
-    urgency: 'Low',
-    contact: { name: 'Arun Kumar', email: 'arun.tutor@email.com' },
-    views: 312,
-    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '5',
-    title: 'O- Blood Needed for Emergency Surgery',
-    description: 'Urgent requirement of O negative blood at Apollo Hospital. Patient is in critical condition. Any donors please contact immediately.',
-    category: 'Blood Needed',
-    city: 'Hyderabad',
-    area: 'Jubilee Hills',
-    urgency: 'High',
-    contact: { name: 'Dr. Reddy', phone: '9876123450' },
-    views: 445,
-    createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '6',
-    title: 'Lost iPhone 14 Pro - Grey Color',
-    description: 'Lost my iPhone 14 Pro (Space Grey) in an Uber cab yesterday evening around Koramangala area. Has a distinctive crack on the corner.',
-    category: 'Item Lost',
-    city: 'Bangalore',
-    area: 'Koramangala',
-    urgency: 'High',
-    contact: { name: 'Vikram Singh', phone: '9012345678' },
-    views: 178,
-    createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '7',
-    title: 'Need Volunteers for Flood Relief Work',
-    description: 'Looking for volunteers to help with flood relief distribution in affected areas. Transportation and food will be provided. Join us this weekend.',
-    category: 'Help Needed',
-    city: 'Kolkata',
-    area: 'Salt Lake',
-    urgency: 'High',
-    contact: { name: 'NGO Seva', phone: '9111222333', email: 'seva.ngo@email.com' },
-    views: 567,
-    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '8',
-    title: 'Donating Winter Clothes for Homeless',
-    description: 'Have collected warm clothes, blankets, and jackets for homeless people. Looking for coordinators to help distribute in different areas.',
-    category: 'Offer',
-    city: 'Delhi',
-    area: 'Connaught Place',
-    urgency: 'Low',
-    contact: { name: 'Helping Hands', email: 'info@helpinghands.org' },
-    views: 289,
-    createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '9',
-    title: 'B+ Blood Donor Needed at AIIMS',
-    description: 'Patient admitted for liver transplant requires B+ blood. 3 units needed. Please help save a life. AIIMS, New Delhi.',
-    category: 'Blood Needed',
-    city: 'Delhi',
-    area: 'AIIMS',
-    urgency: 'High',
-    contact: { name: 'Amit Verma', phone: '9898989898' },
-    views: 334,
-    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '10',
-    title: 'Lost Pet Dog - Golden Retriever Named Bruno',
-    description: 'Our beloved Golden Retriever Bruno went missing from Banjara Hills. He is friendly and has a blue collar with our contact info.',
-    category: 'Item Lost',
-    city: 'Hyderabad',
-    area: 'Banjara Hills',
-    urgency: 'High',
-    contact: { name: 'Sanjay Rao', phone: '9876512340' },
-    views: 423,
-    createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '11',
-    title: 'Need Help Moving Furniture - Will Pay',
-    description: 'Moving to a new apartment and need 2-3 people to help move furniture. Will pay Rs 500 per person. Work will take around 3 hours.',
-    category: 'Help Needed',
-    city: 'Pune',
-    area: 'Koregaon Park',
-    urgency: 'Medium',
-    contact: { name: 'Rohan Joshi', phone: '9777888999' },
-    views: 145,
-    createdAt: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    _id: '12',
-    title: 'Free Medical Camp This Sunday',
-    description: 'Organizing a free health checkup camp including blood pressure, diabetes, and eye checkup. All are welcome. Doctors will be available.',
-    category: 'Offer',
-    city: 'Mumbai',
-    area: 'Dharavi',
-    urgency: 'Low',
-    contact: { name: 'Health First NGO', email: 'contact@healthfirst.org' },
-    views: 678,
-    createdAt: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString()
-  }
+  { _id: '1', title: 'A+ Blood Donor Urgently Required - City Hospital', description: 'My father needs A+ blood urgently for surgery at City Hospital, Sector 21. Please help if you can donate.', category: 'Blood Needed', city: 'Delhi', area: 'Sector 21', urgency: 'High', contact: { name: 'Rahul Sharma', phone: '9876543210' }, views: 156, createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() },
+  { _id: '2', title: 'Lost Black Wallet Near MG Road Metro Station', description: 'Lost my black leather wallet containing ID cards and some cash near MG Road Metro Station entrance.', category: 'Item Lost', city: 'Bangalore', area: 'MG Road', urgency: 'Medium', contact: { name: 'Priya Patel' }, views: 89, createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() },
+  { _id: '3', title: 'Senior Citizen Needs Grocery Pickup Assistance', description: 'Elderly person living alone needs help with weekly grocery shopping. Cannot travel due to mobility issues.', category: 'Help Needed', city: 'Mumbai', area: 'Andheri West', urgency: 'Medium', contact: { name: 'Meera Aunty' }, views: 234, createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString() },
+  { _id: '4', title: 'Free Tutoring for Underprivileged Children', description: 'Offering free Math and Science tutoring for children from underprivileged backgrounds. Available on weekends.', category: 'Offer', city: 'Chennai', area: 'T. Nagar', urgency: 'Low', contact: { name: 'Arun Kumar' }, views: 312, createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+  { _id: '5', title: 'O- Blood Needed for Emergency Surgery', description: 'Urgent requirement of O negative blood at Apollo Hospital. Patient is in critical condition.', category: 'Blood Needed', city: 'Hyderabad', area: 'Jubilee Hills', urgency: 'High', contact: { name: 'Dr. Reddy' }, views: 445, createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString() },
+  { _id: '6', title: 'Need Volunteers for Flood Relief Work', description: 'Looking for volunteers to help with flood relief distribution in affected areas.', category: 'Help Needed', city: 'Kolkata', area: 'Salt Lake', urgency: 'High', contact: { name: 'NGO Seva' }, views: 567, createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString() },
 ];
 
-const MOCK_STATS: Stats = {
-  overview: {
-    totalActive: 156,
-    totalResolved: 89,
-    totalViews: 12450,
-    recentPosts: 23,
-    highUrgencyCount: 12
-  },
-  categoryCounts: {
-    'Help Needed': 45,
-    'Item Lost': 38,
-    'Blood Needed': 28,
-    'Offer': 45
-  }
-};
+const MOCK_STATS: Stats = { overview: { totalActive: 156, totalViews: 12450, recentPosts: 23, highUrgencyCount: 12 }, categoryCounts: { 'Help Needed': 45, 'Item Lost': 38, 'Blood Needed': 28, 'Offer': 45 } };
+
+const CATEGORIES = [
+  { key: 'Blood Needed', label: 'Blood Needed', icon: Heart, color: 'red', desc: 'Urgent blood donation requests' },
+  { key: 'Help Needed', label: 'Help Needed', icon: HelpCircle, color: 'blue', desc: 'Community assistance requests' },
+  { key: 'Item Lost', label: 'Lost & Found', icon: Search, color: 'amber', desc: 'Lost items and found belongings' },
+  { key: 'Offer', label: 'Offers', icon: Gift, color: 'emerald', desc: 'Help and resources offered' },
+];
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -220,7 +63,6 @@ function HomeContent() {
   const fetchPosts = useCallback(async () => {
     setLoading(true);
     try {
-      // Try to fetch from API first
       const params = new URLSearchParams();
       if (filters.city) params.set('city', filters.city);
       if (filters.category) params.set('category', filters.category);
@@ -228,221 +70,243 @@ function HomeContent() {
       if (filters.q) params.set('q', filters.q);
       params.set('sort', filters.sort);
       params.set('page', currentPage.toString());
-      params.set('limit', '12');
+      params.set('limit', '10');
 
       const res = await fetch(`/api/posts?${params.toString()}`);
-
       if (res.ok) {
         const data = await res.json();
         setPosts(data.posts);
         setTotalPages(data.pagination.totalPages);
       } else {
-        // Fallback to mock data
         let filteredPosts = [...MOCK_POSTS];
-
-        if (filters.city) {
-          filteredPosts = filteredPosts.filter(p =>
-            p.city.toLowerCase().includes(filters.city.toLowerCase())
-          );
-        }
-        if (filters.category) {
-          filteredPosts = filteredPosts.filter(p => p.category === filters.category);
-        }
-        if (filters.urgency) {
-          filteredPosts = filteredPosts.filter(p => p.urgency === filters.urgency);
-        }
-        if (filters.q) {
-          const query = filters.q.toLowerCase();
-          filteredPosts = filteredPosts.filter(p =>
-            p.title.toLowerCase().includes(query) ||
-            p.description.toLowerCase().includes(query)
-          );
-        }
-
-        if (filters.sort === 'priority') {
-          filteredPosts.sort((a, b) => {
-            const urgencyOrder = { High: 3, Medium: 2, Low: 1 };
-            return urgencyOrder[b.urgency] - urgencyOrder[a.urgency];
-          });
-        }
-
+        if (filters.city) filteredPosts = filteredPosts.filter(p => p.city.toLowerCase().includes(filters.city.toLowerCase()));
+        if (filters.category) filteredPosts = filteredPosts.filter(p => p.category === filters.category);
+        if (filters.urgency) filteredPosts = filteredPosts.filter(p => p.urgency === filters.urgency);
+        if (filters.q) { const q = filters.q.toLowerCase(); filteredPosts = filteredPosts.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)); }
         setPosts(filteredPosts);
-        setTotalPages(Math.ceil(filteredPosts.length / 12));
+        setTotalPages(1);
       }
-    } catch (error) {
-      console.error('Failed to fetch posts:', error);
-      // Use mock data on error
-      setPosts(MOCK_POSTS);
-      setTotalPages(1);
-    } finally {
-      setLoading(false);
-    }
+    } catch { setPosts(MOCK_POSTS); setTotalPages(1); }
+    finally { setLoading(false); }
   }, [filters, currentPage]);
 
   const fetchStats = useCallback(async () => {
-    try {
-      const res = await fetch('/api/stats');
-      if (res.ok) {
-        const data = await res.json();
-        setStats(data);
-      } else {
-        setStats(MOCK_STATS);
-      }
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
-      setStats(MOCK_STATS);
-    }
+    try { const res = await fetch('/api/stats'); setStats(res.ok ? await res.json() : MOCK_STATS); }
+    catch { setStats(MOCK_STATS); }
   }, []);
 
-  useEffect(() => {
-    fetchPosts();
-    fetchStats();
-  }, [fetchPosts, fetchStats]);
-
-  const handleFilterChange = (newFilters: Filters) => {
-    setFilters(newFilters);
-    setCurrentPage(1);
-  };
+  useEffect(() => { fetchPosts(); fetchStats(); }, [fetchPosts, fetchStats]);
+  const handleFilterChange = (newFilters: Filters) => { setFilters(newFilters); setCurrentPage(1); };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-stone-50">
       {/* Hero Section */}
-      <section className="text-center py-12 mb-8">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
-            Hyperlocal Community Help
-          </span>
-        </h1>
-        <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-8">
-          Connect with your community. Post help requests, find lost items, donate blood, and offer assistance to those in need.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link
-            href="/create"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 transition-all"
-          >
-            <Plus className="w-5 h-5" />
-            Post a Request
-          </Link>
-          <Link
-            href="/map"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800/50 border border-white/10 text-white font-semibold rounded-xl hover:bg-slate-700/50 transition-all"
-          >
-            <Search className="w-5 h-5" />
-            Explore Map
-          </Link>
+      <div className="bg-white border-b border-stone-200">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="max-w-2xl">
+            <h1 className="text-3xl font-bold text-stone-900 tracking-tight mb-3">
+              Community Help Network
+            </h1>
+            <p className="text-lg text-stone-600 mb-6">
+              Connect with neighbors, find help when you need it, and support others in your community.
+            </p>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/create"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Post a Request
+              </Link>
+              <Link
+                href="/map"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-stone-700 font-medium border border-stone-300 rounded-lg hover:bg-stone-50 transition-colors"
+              >
+                <MapPin className="w-4 h-4" />
+                View Map
+              </Link>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          {stats && (
+            <div className="flex items-center gap-8 mt-8 pt-8 border-t border-stone-100">
+              <div>
+                <p className="text-2xl font-bold text-stone-900">{stats.overview.totalActive}</p>
+                <p className="text-sm text-stone-500">Active requests</p>
+              </div>
+              <div className="w-px h-10 bg-stone-200" />
+              <div>
+                <p className="text-2xl font-bold text-teal-600">+{stats.overview.recentPosts}</p>
+                <p className="text-sm text-stone-500">New today</p>
+              </div>
+              <div className="w-px h-10 bg-stone-200" />
+              <div>
+                <p className="text-2xl font-bold text-red-600">{stats.overview.highUrgencyCount}</p>
+                <p className="text-sm text-stone-500">Need urgent help</p>
+              </div>
+            </div>
+          )}
         </div>
-      </section>
+      </div>
 
-      {/* Quick Stats */}
-      {stats && (
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatsCard
-            title="Active Requests"
-            value={stats.overview.totalActive}
-            icon={<TrendingUp className="w-6 h-6 text-purple-400" />}
-            color="purple"
-          />
-          <StatsCard
-            title="Total Views"
-            value={stats.overview.totalViews.toLocaleString()}
-            icon={<Eye className="w-6 h-6 text-blue-400" />}
-            color="blue"
-          />
-          <StatsCard
-            title="Today's Posts"
-            value={stats.overview.recentPosts}
-            icon={<Clock className="w-6 h-6 text-green-400" />}
-            color="green"
-          />
-          <StatsCard
-            title="Urgent Requests"
-            value={stats.overview.highUrgencyCount}
-            icon={<AlertTriangle className="w-6 h-6 text-red-400" />}
-            color="red"
-          />
-        </section>
-      )}
-
-      {/* Category Quick Filters */}
-      <section className="flex flex-wrap justify-center gap-3 mb-8">
-        {[
-          { category: '', label: 'All', icon: null, count: stats?.overview.totalActive },
-          { category: 'Blood Needed', label: 'Blood Needed', icon: Heart, count: stats?.categoryCounts['Blood Needed'] },
-          { category: 'Help Needed', label: 'Help Needed', icon: HelpCircle, count: stats?.categoryCounts['Help Needed'] },
-          { category: 'Item Lost', label: 'Lost & Found', icon: Search, count: stats?.categoryCounts['Item Lost'] },
-          { category: 'Offer', label: 'Offers', icon: Gift, count: stats?.categoryCounts['Offer'] },
-        ].map(({ category, label, icon: Icon, count }) => (
-          <button
-            key={category}
-            onClick={() => handleFilterChange({ ...filters, category })}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${filters.category === category
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
-                : 'bg-slate-800/50 border border-white/10 text-slate-300 hover:bg-slate-700/50'
-              }`}
-          >
-            {Icon && <Icon className="w-4 h-4" />}
-            {label}
-            {count !== undefined && (
-              <span className="px-2 py-0.5 bg-white/10 rounded-full text-xs">{count}</span>
-            )}
-          </button>
-        ))}
-      </section>
-
-      {/* Filters */}
-      <FiltersBar
-        onFilterChange={handleFilterChange}
-        initialFilters={filters}
-      />
-
-      {/* Posts Grid */}
-      <section>
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
-          </div>
-        ) : posts.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-10 h-10 text-slate-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">No posts found</h3>
-            <p className="text-slate-400 mb-6">Try adjusting your filters or search query</p>
-            <Link
-              href="/create"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+      {/* Category Cards */}
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {CATEGORIES.map(({ key, label, icon: Icon, color, desc }) => (
+            <button
+              key={key}
+              onClick={() => handleFilterChange({ ...filters, category: filters.category === key ? '' : key })}
+              className={`group p-4 rounded-xl text-left transition-all ${filters.category === key
+                  ? `bg-${color}-50 border-2 border-${color}-200`
+                  : 'bg-white border border-stone-200 hover:border-stone-300 hover:shadow-sm'
+                }`}
             >
-              <Plus className="w-4 h-4" />
-              Create the first post
-            </Link>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${filters.category === key
+                  ? `bg-${color}-100`
+                  : 'bg-stone-100 group-hover:bg-stone-200'
+                }`}>
+                <Icon className={`w-5 h-5 ${color === 'red' ? 'text-red-600' :
+                    color === 'blue' ? 'text-blue-600' :
+                      color === 'amber' ? 'text-amber-600' : 'text-emerald-600'
+                  }`} />
+              </div>
+              <p className="font-medium text-stone-900 mb-0.5">{label}</p>
+              <p className="text-xs text-stone-500">{stats?.categoryCounts[key] || 0} active</p>
+            </button>
+          ))}
+        </div>
+
+        {/* Main Content Area */}
+        <div className="lg:flex lg:gap-8">
+          {/* Posts Section */}
+          <main className="flex-1 min-w-0">
+            {/* Section Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-lg font-semibold text-stone-900">
+                  {filters.category || 'All Requests'}
+                </h2>
+                <p className="text-sm text-stone-500">
+                  {loading ? 'Loading...' : `${posts.length} results`}
+                </p>
+              </div>
             </div>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-          </>
-        )}
-      </section>
+
+            {/* Filters */}
+            <FiltersBar onFilterChange={handleFilterChange} initialFilters={filters} />
+
+            {/* Posts List */}
+            {loading ? (
+              <div className="py-16 text-center">
+                <div className="w-8 h-8 border-2 border-stone-200 border-t-teal-600 rounded-full animate-spin mx-auto"></div>
+              </div>
+            ) : posts.length === 0 ? (
+              <div className="py-16 text-center bg-white rounded-xl border border-stone-200">
+                <div className="w-14 h-14 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-6 h-6 text-stone-400" />
+                </div>
+                <p className="text-stone-600 font-medium mb-1">No requests found</p>
+                <p className="text-sm text-stone-400 mb-4">Try adjusting your filters or search terms</p>
+                <Link href="/create" className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700">
+                  Post the first request
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {posts.map((post) => (
+                  <PostCard key={post._id} post={post} />
+                ))}
+              </div>
+            )}
+
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          </main>
+
+          {/* Sidebar */}
+          <aside className="hidden lg:block w-72 flex-shrink-0">
+            <div className="sticky top-24 space-y-4">
+              {/* Urgent Banner */}
+              {stats && stats.overview.highUrgencyCount > 0 && (
+                <div className="bg-red-50 border border-red-100 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                    </span>
+                    <span className="text-sm font-semibold text-red-700">Urgent Requests</span>
+                  </div>
+                  <p className="text-sm text-red-600 mb-3">
+                    {stats.overview.highUrgencyCount} people need immediate help
+                  </p>
+                  <button
+                    onClick={() => handleFilterChange({ ...filters, urgency: 'High' })}
+                    className="text-sm font-medium text-red-700 hover:text-red-800 flex items-center gap-1"
+                  >
+                    View urgent requests
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
+              {/* How It Works */}
+              <div className="bg-white border border-stone-200 rounded-xl p-4">
+                <h3 className="font-semibold text-stone-900 mb-3">How it works</h3>
+                <div className="space-y-3">
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 text-xs font-bold text-teal-700">1</div>
+                    <div>
+                      <p className="text-sm font-medium text-stone-900">Post your request</p>
+                      <p className="text-xs text-stone-500">Describe what you need help with</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 text-xs font-bold text-teal-700">2</div>
+                    <div>
+                      <p className="text-sm font-medium text-stone-900">Community responds</p>
+                      <p className="text-xs text-stone-500">Neighbors see and reach out</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 text-xs font-bold text-teal-700">3</div>
+                    <div>
+                      <p className="text-sm font-medium text-stone-900">Get help</p>
+                      <p className="text-xs text-stone-500">Connect and resolve together</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Links */}
+              <div className="bg-white border border-stone-200 rounded-xl p-4">
+                <h3 className="font-semibold text-stone-900 mb-3">Quick Links</h3>
+                <div className="space-y-1">
+                  <Link href="/create" className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-stone-600 hover:bg-stone-50 transition-colors">
+                    <span>Post a request</span>
+                    <ChevronRight className="w-4 h-4 text-stone-400" />
+                  </Link>
+                  <Link href="/map" className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-stone-600 hover:bg-stone-50 transition-colors">
+                    <span>Map view</span>
+                    <ChevronRight className="w-4 h-4 text-stone-400" />
+                  </Link>
+                  <Link href="/admin" className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-stone-600 hover:bg-stone-50 transition-colors">
+                    <span>Admin dashboard</span>
+                    <ChevronRight className="w-4 h-4 text-stone-400" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default function HomePage() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
-      </div>
-    }>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="w-8 h-8 border-2 border-stone-200 border-t-teal-600 rounded-full animate-spin"></div></div>}>
       <HomeContent />
     </Suspense>
   );

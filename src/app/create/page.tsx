@@ -3,50 +3,64 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-    title: 'Create Post - HelpRadar',
-    description: 'Create a new help request, lost item report, blood donation request, or offer on HelpRadar.'
+    title: 'New Request — HelpRadar',
+    description: 'Post a new community help request'
 };
 
 export default function CreatePage() {
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Back Link */}
-            <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
-            >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Feed
-            </Link>
+        <div className="max-w-6xl mx-auto px-4 lg:px-8 py-6">
+            <div className="lg:flex lg:gap-12">
+                {/* Sidebar info */}
+                <aside className="hidden lg:block lg:w-80 flex-shrink-0">
+                    <div className="sticky top-24">
+                        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 mb-6">
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to requests
+                        </Link>
 
-            {/* Header */}
-            <div className="text-center mb-10">
-                <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent mb-3">
-                    Create a New Post
-                </h1>
-                <p className="text-slate-400 max-w-lg mx-auto">
-                    Share your request with the community. Our smart system will help categorize and prioritize your post automatically.
-                </p>
+                        <h1 className="text-2xl font-semibold text-stone-900 mb-2">Post a Request</h1>
+                        <p className="text-stone-500 text-sm mb-8">
+                            Share what you need with your community. Be specific about location and urgency for faster responses.
+                        </p>
+
+                        <div className="space-y-4">
+                            <div className="p-4 bg-teal-50/50 border border-teal-100 rounded-lg">
+                                <h4 className="font-medium text-teal-900 text-sm mb-1">Tips for better responses</h4>
+                                <ul className="text-xs text-teal-700 space-y-1">
+                                    <li>• Include specific location details</li>
+                                    <li>• Add photos if relevant</li>
+                                    <li>• Provide contact info</li>
+                                    <li>• Set accurate urgency level</li>
+                                </ul>
+                            </div>
+
+                            <div className="p-4 bg-stone-50 rounded-lg">
+                                <h4 className="font-medium text-stone-700 text-sm mb-1">After posting</h4>
+                                <p className="text-xs text-stone-500">
+                                    Your request will be visible to the community immediately. You'll receive notifications when someone responds.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                {/* Form */}
+                <main className="flex-1 min-w-0">
+                    {/* Mobile header */}
+                    <div className="lg:hidden mb-6">
+                        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 mb-4">
+                            <ArrowLeft className="w-4 h-4" />
+                            Back
+                        </Link>
+                        <h1 className="text-xl font-semibold text-stone-900">New Request</h1>
+                    </div>
+
+                    <div className="bg-white border border-stone-200 rounded-lg p-5 lg:p-6">
+                        <CreatePostForm />
+                    </div>
+                </main>
             </div>
-
-            {/* Tips */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
-                    <h4 className="font-medium text-blue-400 mb-1">📍 Be Specific</h4>
-                    <p className="text-sm text-slate-400">Include exact location and area for faster local help.</p>
-                </div>
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
-                    <h4 className="font-medium text-amber-400 mb-1">📞 Add Contact</h4>
-                    <p className="text-sm text-slate-400">Provide phone or email so helpers can reach you.</p>
-                </div>
-                <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
-                    <h4 className="font-medium text-purple-400 mb-1">✨ Use Keywords</h4>
-                    <p className="text-sm text-slate-400">Words like "urgent" or "blood" help auto-prioritize.</p>
-                </div>
-            </div>
-
-            {/* Form */}
-            <CreatePostForm />
         </div>
     );
 }

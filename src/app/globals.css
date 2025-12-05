@@ -1,163 +1,129 @@
 @import "tailwindcss";
 
 :root {
-  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  /* Brand Colors */
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --secondary: #ec4899;
-  
-  /* Category Colors */
-  --help-needed: #3b82f6;
-  --item-lost: #f59e0b;
-  --blood-needed: #ef4444;
-  --offer: #10b981;
-  
-  /* Urgency Colors */
-  --urgency-low: #10b981;
-  --urgency-medium: #f59e0b;
-  --urgency-high: #ef4444;
+  /* Distinctive Brand - Not Generic Blue */
+  --brand-primary: #0d9488;
+  --brand-dark: #0f766e;
+  --brand-light: #14b8a6;
+
+  /* Warm Neutrals - Not Cold Grays */
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-muted: #a8a29e;
+  --bg-warm: #fafaf9;
+  --bg-card: #ffffff;
+  --border-subtle: #e7e5e4;
+  --border-strong: #d6d3d1;
+
+  /* Accent Colors */
+  --accent-red: #ef4444;
+  --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-blue: #3b82f6;
 }
 
-/* Custom Font */
-.font-inter {
-  font-family: var(--font-inter);
+/* ============================================
+   TYPOGRAPHY - Real Design System
+   ============================================ */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Custom Scrollbar */
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.5);
-  border-radius: 4px;
+  background: #d6d3d1;
+  border-radius: 5px;
+  border: 2px solid #fafaf9;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.7);
+  background: #a8a29e;
 }
 
-/* Selection */
+/* ============================================
+   SELECTION
+   ============================================ */
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
-  color: white;
+  background: rgba(13, 148, 136, 0.15);
+  color: #1c1917;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+.animate-fade-up {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
 }
 
-.animate-slide-in {
-  animation: slideIn 0.3s ease-out;
+@keyframes ping {
+
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-/* Card Hover Effects */
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.2);
-}
-
-/* Gradient Text */
-.gradient-text {
-  background: linear-gradient(135deg, #6366f1, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Glass Effect */
-.glass {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Focus Ring */
-.focus-ring:focus {
-  outline: none;
-  ring: 2px;
-  ring-color: rgba(99, 102, 241, 0.5);
-  ring-offset: 2px;
-  ring-offset-color: rgba(15, 23, 42, 1);
-}
-
-/* Button Styles */
-.btn-primary {
-  background: linear-gradient(135deg, #ec4899, #6366f1);
-  color: white;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px -4px rgba(99, 102, 241, 0.4);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px -4px rgba(99, 102, 241, 0.5);
-}
-
-/* Input Styles */
-input, select, textarea {
-  font-family: var(--font-inter);
-}
-
-/* Leaflet Map Customization */
-.leaflet-container {
-  font-family: var(--font-inter);
-  background: #1e293b;
-}
-
-.leaflet-popup-content-wrapper {
-  background: #1e293b;
-  color: white;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.leaflet-popup-tip {
-  background: #1e293b;
-}
-
-.leaflet-popup-content {
-  margin: 8px 12px;
-}
-
-/* Line Clamp Utilities */
+/* ============================================
+   LINE CLAMP
+   ============================================ */
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -165,6 +131,7 @@ input, select, textarea {
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -172,27 +139,41 @@ input, select, textarea {
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Select Arrow */
+/* ============================================
+   SELECT STYLING
+   ============================================ */
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-position: right 0.75rem center;
-  background-size: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2378716c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-size: 16px;
   background-repeat: no-repeat;
-  padding-right: 2.5rem;
 }
 
-/* Loading Skeleton */
-.skeleton {
-  background: linear-gradient(90deg, rgba(71, 85, 105, 0.2) 25%, rgba(71, 85, 105, 0.4) 50%, rgba(71, 85, 105, 0.2) 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+/* ============================================
+   FOCUS STYLES
+   ============================================ */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #fafaf9, 0 0 0 4px rgba(13, 148, 136, 0.4);
 }
 
-@keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+/* ============================================
+   LEAFLET MAP
+   ============================================ */
+.leaflet-container {
+  font-family: inherit;
+  background: #fafaf9;
+  border-radius: 16px;
+}
+
+.leaflet-popup-content-wrapper {
+  background: white;
+  color: #1c1917;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
 }

@@ -2,9 +2,7 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, MapPin, Clock, Eye, Phone, Mail, User, Flag, Share2, CheckCircle, Loader2, AlertTriangle, Heart } from 'lucide-react';
-import CategoryBadge from '@/components/CategoryBadge';
-import UrgencyIndicator from '@/components/UrgencyIndicator';
+import { ArrowLeft, MapPin, Clock, Eye, Phone, User, Flag, Share2, CheckCircle, Loader2, Heart, HelpCircle, Search, Gift } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
 
 interface Post {
@@ -15,11 +13,7 @@ interface Post {
     city: string;
     area?: string;
     urgency: 'Low' | 'Medium' | 'High';
-    contact?: {
-        name?: string;
-        phone?: string;
-        email?: string;
-    };
+    contact?: { name?: string; phone?: string; email?: string };
     images?: Array<{ url: string }>;
     views: number;
     createdAt: string;
@@ -27,7 +21,6 @@ interface Post {
     status: string;
 }
 
-// Mock post for demo
 const MOCK_POST: Post = {
     _id: '1',
     title: 'A+ Blood Donor Urgently Required - City Hospital',
@@ -35,336 +28,191 @@ const MOCK_POST: Post = {
 
 The surgery is scheduled for tomorrow morning and we need at least 2 units of A+ blood. The blood bank is running low and we are reaching out to the community for help.
 
-**Details:**
-- Blood Type: A Positive (A+)
-- Hospital: City Hospital, Sector 21
-- Required: 2 Units minimum
-- When: Before 6 AM tomorrow
+Details:
+• Blood Type: A Positive (A+)
+• Hospital: City Hospital, Sector 21
+• Required: 2 Units minimum
+• When: Before 6 AM tomorrow
 
-Please contact immediately if you can help. The hospital blood bank is open 24/7.
-
-Thank you for your help. May God bless you.`,
+Please contact immediately if you can help. The hospital blood bank is open 24/7. Thank you for your help.`,
     category: 'Blood Needed',
     city: 'Delhi',
     area: 'Sector 21',
     urgency: 'High',
-    contact: {
-        name: 'Rahul Sharma',
-        phone: '9876543210',
-        email: 'rahul.sharma@email.com'
-    },
-    images: [
-        { url: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800' }
-    ],
+    contact: { name: 'Rahul Sharma', phone: '9876543210', email: 'rahul.sharma@email.com' },
+    images: [{ url: 'https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800' }],
     views: 156,
     createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     expiresAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
     status: 'active'
 };
 
-function formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
+const catConfig: Record<string, { icon: React.ElementType; color: string; bg: string; border: string }> = {
+    'Blood Needed': { icon: Heart, color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' },
+    'Help Needed': { icon: HelpCircle, color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
+    'Item Lost': { icon: Search, color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200' },
+    'Offer': { icon: Gift, color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
+};
 
-function formatTimeAgo(dateString: string): string {
-    const date = new Date(dateString);
-    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+const formatTimeAgo = (d: string) => {
+    const s = Math.floor((Date.now() - new Date(d).getTime()) / 1000);
+    if (s < 60) return 'Just now';
+    if (s < 3600) return `${Math.floor(s / 60)} min ago`;
+    if (s < 86400) return `${Math.floor(s / 3600)} hours ago`;
+    return `${Math.floor(s / 86400)} days ago`;
+};
 
-    if (seconds < 60) return 'Just now';
-    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-    if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
-    return date.toLocaleDateString();
-}
+const formatDate = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
 export default function PostDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const resolvedParams = use(params);
+    const { id } = use(params);
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
-    const [showContactModal, setShowContactModal] = useState(false);
-    const [reportSubmitted, setReportSubmitted] = useState(false);
-    const [showReportForm, setShowReportForm] = useState(false);
-    const [reportReason, setReportReason] = useState('');
+    const [showContact, setShowContact] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const [reported, setReported] = useState(false);
 
     useEffect(() => {
-        const fetchPost = async () => {
-            try {
-                const res = await fetch(`/api/posts/${resolvedParams.id}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    setPost(data.post);
-                } else {
-                    // Use mock post for demo
-                    setPost(MOCK_POST);
-                }
-            } catch (error) {
-                console.error('Failed to fetch post:', error);
-                setPost(MOCK_POST);
-            } finally {
-                setLoading(false);
-            }
-        };
+        fetch(`/api/posts/${id}`)
+            .then(r => r.ok ? r.json() : null)
+            .then(d => setPost(d?.post || MOCK_POST))
+            .catch(() => setPost(MOCK_POST))
+            .finally(() => setLoading(false));
+    }, [id]);
 
-        fetchPost();
-    }, [resolvedParams.id]);
-
-    const handleReport = async () => {
-        if (!reportReason) return;
-
+    const share = async () => {
         try {
-            await fetch(`/api/posts/${resolvedParams.id}/report`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reason: reportReason })
-            });
-            setReportSubmitted(true);
-            setShowReportForm(false);
-        } catch (error) {
-            console.error('Failed to submit report:', error);
-        }
+            if (navigator.share) await navigator.share({ title: post?.title, url: location.href });
+            else { await navigator.clipboard.writeText(location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }
+        } catch { }
     };
 
-    const handleShare = async () => {
-        if (navigator.share) {
-            await navigator.share({
-                title: post?.title,
-                text: post?.description.slice(0, 100) + '...',
-                url: window.location.href
-            });
-        } else {
-            await navigator.clipboard.writeText(window.location.href);
-            alert('Link copied to clipboard!');
-        }
-    };
+    const report = () => { setReported(true); };
 
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
-            </div>
-        );
-    }
+    if (loading) return <div className="flex justify-center py-32"><Loader2 className="w-6 h-6 text-teal-600 animate-spin" /></div>;
+    if (!post) return <div className="text-center py-32"><p className="text-stone-500">Post not found</p><Link href="/" className="text-teal-600 mt-2 block">← Back</Link></div>;
 
-    if (!post) {
-        return (
-            <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-                <h2 className="text-2xl font-bold text-white mb-4">Post Not Found</h2>
-                <p className="text-slate-400 mb-8">The post you're looking for doesn't exist or has been removed.</p>
-                <Link href="/" className="text-purple-400 hover:text-purple-300">
-                    ← Back to Home
-                </Link>
-            </div>
-        );
-    }
+    const { icon: CatIcon, color, bg, border } = catConfig[post.category];
 
     return (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Back Link */}
-            <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6"
-            >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Feed
-            </Link>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
-                    {/* Image */}
-                    {post.images && post.images.length > 0 && (
-                        <div className="rounded-2xl overflow-hidden border border-white/10">
-                            <img
-                                src={post.images[0].url}
-                                alt={post.title}
-                                className="w-full h-64 sm:h-80 object-cover"
-                            />
-                        </div>
-                    )}
-
-                    {/* Header */}
-                    <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            <CategoryBadge category={post.category} size="lg" />
-                            <UrgencyIndicator urgency={post.urgency} size="lg" />
-                        </div>
-
-                        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                            {post.title}
-                        </h1>
-
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">
-                            <div className="flex items-center gap-1">
-                                <MapPin className="w-4 h-4 text-purple-400" />
-                                {post.city}{post.area ? `, ${post.area}` : ''}
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Clock className="w-4 h-4" />
-                                {formatTimeAgo(post.createdAt)}
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Eye className="w-4 h-4" />
-                                {post.views} views
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
-                        <h2 className="text-lg font-semibold text-white mb-4">Description</h2>
-                        <div className="prose prose-invert prose-slate max-w-none">
-                            {post.description.split('\n').map((paragraph, idx) => (
-                                <p key={idx} className="text-slate-300 mb-3 last:mb-0">
-                                    {paragraph}
-                                </p>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex flex-wrap gap-3">
-                        <button
-                            onClick={handleShare}
-                            className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 border border-white/10 rounded-xl text-slate-300 hover:bg-slate-700/50 transition-colors"
-                        >
-                            <Share2 className="w-4 h-4" />
-                            Share
+        <div className="min-h-screen bg-white">
+            {/* Header */}
+            <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-stone-100">
+                <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-2 text-stone-500 hover:text-stone-900 text-sm">
+                        <ArrowLeft className="w-4 h-4" /> Back to requests
+                    </Link>
+                    <div className="flex gap-1">
+                        <button onClick={share} className="p-2 rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-600">
+                            {copied ? <CheckCircle className="w-5 h-5 text-green-600" /> : <Share2 className="w-5 h-5" />}
                         </button>
+                        <button onClick={report} disabled={reported} className="p-2 rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-600 disabled:text-green-600">
+                            {reported ? <CheckCircle className="w-5 h-5" /> : <Flag className="w-5 h-5" />}
+                        </button>
+                    </div>
+                </div>
+            </header>
 
-                        {!reportSubmitted ? (
-                            <button
-                                onClick={() => setShowReportForm(!showReportForm)}
-                                className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 border border-white/10 rounded-xl text-slate-300 hover:text-red-400 hover:border-red-500/30 transition-colors"
-                            >
-                                <Flag className="w-4 h-4" />
-                                Report
-                            </button>
-                        ) : (
-                            <span className="flex items-center gap-2 px-4 py-2 text-green-400">
-                                <CheckCircle className="w-4 h-4" />
-                                Report Submitted
-                            </span>
+            <main className="max-w-6xl mx-auto px-6 py-8">
+                <div className="flex gap-10">
+                    {/* Left: Main Content */}
+                    <div className="flex-1 min-w-0">
+                        {/* Urgent */}
+                        {post.urgency === 'High' && (
+                            <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 bg-red-50 border border-red-100 rounded-full">
+                                <span className="relative flex h-2 w-2"><span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75" /><span className="relative rounded-full h-2 w-2 bg-red-500" /></span>
+                                <span className="text-sm font-medium text-red-700">Urgent</span>
+                            </div>
                         )}
+
+                        {/* Category Badge */}
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-medium ${bg} ${color} border ${border}`}>
+                                <CatIcon className="w-4 h-4" /> {post.category}
+                            </span>
+                        </div>
+
+                        {/* Title */}
+                        <h1 className="text-3xl font-bold text-stone-900 leading-tight mb-4">{post.title}</h1>
+
+                        {/* Meta */}
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-stone-500 mb-6 pb-6 border-b border-stone-100">
+                            <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-teal-600" />{post.city}{post.area && `, ${post.area}`}</span>
+                            <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" />{formatTimeAgo(post.createdAt)}</span>
+                            <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" />{post.views} views</span>
+                        </div>
+
+                        {/* Image */}
+                        {post.images?.[0] && (
+                            <div className="mb-6 rounded-xl overflow-hidden border border-stone-100">
+                                <img src={post.images[0].url} alt="" className="w-full aspect-[16/9] object-cover" />
+                            </div>
+                        )}
+
+                        {/* Description */}
+                        <div className="prose prose-stone max-w-none mb-8">
+                            <div className="text-stone-700 leading-7 whitespace-pre-line">{post.description}</div>
+                        </div>
+
+                        {/* Details */}
+                        <div className="flex gap-6 text-sm pb-6 border-b border-stone-100">
+                            <div><span className="text-stone-400 block mb-0.5">Posted on</span><span className="text-stone-900 font-medium">{formatDate(post.createdAt)}</span></div>
+                            {post.expiresAt && <div><span className="text-stone-400 block mb-0.5">Expires</span><span className="text-stone-900 font-medium">{formatDate(post.expiresAt)}</span></div>}
+                            <div><span className="text-stone-400 block mb-0.5">Status</span><span className={`font-medium ${post.status === 'active' ? 'text-green-600' : 'text-stone-600'}`}>{post.status === 'active' ? 'Active' : post.status}</span></div>
+                        </div>
                     </div>
 
-                    {/* Report Form */}
-                    {showReportForm && (
-                        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
-                            <h4 className="font-medium text-red-400 mb-3 flex items-center gap-2">
-                                <AlertTriangle className="w-4 h-4" />
-                                Report This Post
-                            </h4>
-                            <select
-                                value={reportReason}
-                                onChange={(e) => setReportReason(e.target.value)}
-                                className="w-full px-4 py-2 bg-slate-800/50 border border-white/10 rounded-lg text-white mb-3"
-                            >
-                                <option value="">Select a reason</option>
-                                <option value="spam">Spam</option>
-                                <option value="inappropriate">Inappropriate Content</option>
-                                <option value="fake">Fake / Misleading</option>
-                                <option value="duplicate">Duplicate Post</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <button
-                                onClick={handleReport}
-                                disabled={!reportReason}
-                                className="px-4 py-2 bg-red-500 text-white rounded-lg disabled:opacity-50"
-                            >
-                                Submit Report
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* Sidebar */}
-                <div className="space-y-6">
-                    {/* Contact Card */}
-                    <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
-                        <h3 className="text-lg font-semibold text-white mb-4">Contact Information</h3>
-
-                        {post.contact ? (
-                            <div className="space-y-4">
-                                {post.contact.name && (
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-purple-500/20 rounded-lg">
-                                            <User className="w-5 h-5 text-purple-400" />
+                    {/* Right: Sidebar */}
+                    <aside className="w-80 flex-shrink-0 hidden lg:block">
+                        <div className="sticky top-20">
+                            {/* Contact Card */}
+                            {post.contact && (
+                                <div className="bg-stone-50 rounded-2xl p-6 mb-4">
+                                    <div className="flex items-center gap-3 mb-5">
+                                        <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
+                                            <User className="w-6 h-6 text-teal-600" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-slate-400">Posted by</p>
-                                            <p className="text-white">{post.contact.name}</p>
+                                            <p className="text-xs text-stone-400">Posted by</p>
+                                            <p className="font-semibold text-stone-900">{post.contact.name || 'Anonymous'}</p>
                                         </div>
                                     </div>
-                                )}
-
-                                <button
-                                    onClick={() => setShowContactModal(true)}
-                                    className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-purple-500/25 transition-all flex items-center justify-center gap-2"
-                                >
-                                    <Phone className="w-5 h-5" />
-                                    View Contact Details
-                                </button>
-                            </div>
-                        ) : (
-                            <p className="text-slate-400">No contact information provided.</p>
-                        )}
-                    </div>
-
-                    {/* Post Info */}
-                    <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
-                        <h3 className="text-lg font-semibold text-white mb-4">Post Details</h3>
-                        <dl className="space-y-3 text-sm">
-                            <div className="flex justify-between">
-                                <dt className="text-slate-400">Posted</dt>
-                                <dd className="text-white">{formatDate(post.createdAt)}</dd>
-                            </div>
-                            {post.expiresAt && (
-                                <div className="flex justify-between">
-                                    <dt className="text-slate-400">Expires</dt>
-                                    <dd className="text-white">{formatDate(post.expiresAt)}</dd>
+                                    <button onClick={() => setShowContact(true)}
+                                        className="w-full py-3 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+                                        <Phone className="w-5 h-5" /> View Contact
+                                    </button>
                                 </div>
                             )}
-                            <div className="flex justify-between">
-                                <dt className="text-slate-400">Status</dt>
-                                <dd className="text-green-400 capitalize">{post.status}</dd>
-                            </div>
-                            <div className="flex justify-between">
-                                <dt className="text-slate-400">Views</dt>
-                                <dd className="text-white">{post.views}</dd>
-                            </div>
-                        </dl>
-                    </div>
 
-                    {/* Urgent Banner */}
-                    {post.urgency === 'High' && (
-                        <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30 rounded-xl p-4 animate-pulse-glow">
-                            <div className="flex items-center gap-2 text-red-400 font-medium">
-                                <Heart className="w-5 h-5" fill="currentColor" />
-                                Urgent Help Needed
+                            {/* Quick Info */}
+                            <div className="bg-stone-50 rounded-2xl p-5">
+                                <h3 className="text-sm font-semibold text-stone-900 mb-3">Quick Info</h3>
+                                <dl className="space-y-3 text-sm">
+                                    <div className="flex justify-between"><dt className="text-stone-400">Category</dt><dd className="text-stone-900 font-medium">{post.category}</dd></div>
+                                    <div className="flex justify-between"><dt className="text-stone-400">Location</dt><dd className="text-stone-900 font-medium">{post.city}</dd></div>
+                                    <div className="flex justify-between"><dt className="text-stone-400">Urgency</dt><dd className={`font-medium ${post.urgency === 'High' ? 'text-red-600' : post.urgency === 'Medium' ? 'text-amber-600' : 'text-stone-600'}`}>{post.urgency}</dd></div>
+                                    <div className="flex justify-between"><dt className="text-stone-400">Views</dt><dd className="text-stone-900 font-medium">{post.views}</dd></div>
+                                </dl>
                             </div>
-                            <p className="text-sm text-slate-300 mt-1">
-                                This is a high-priority request. Please help if you can!
-                            </p>
+
+                            {/* Safety */}
+                            <p className="text-xs text-stone-400 mt-4 text-center">Verify details before helping • <button onClick={report} className="text-teal-600 hover:underline">Report</button></p>
                         </div>
-                    )}
+                    </aside>
                 </div>
-            </div>
 
-            {/* Contact Modal */}
-            {post.contact && (
-                <ContactModal
-                    isOpen={showContactModal}
-                    onClose={() => setShowContactModal(false)}
-                    contact={post.contact}
-                    postTitle={post.title}
-                />
-            )}
+                {/* Mobile Contact */}
+                {post.contact && (
+                    <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-stone-200">
+                        <button onClick={() => setShowContact(true)}
+                            className="w-full py-3.5 bg-teal-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
+                            <Phone className="w-5 h-5" /> View Contact Details
+                        </button>
+                    </div>
+                )}
+            </main>
+
+            {post.contact && <ContactModal isOpen={showContact} onClose={() => setShowContact(false)} contact={post.contact} postTitle={post.title} />}
         </div>
     );
 }

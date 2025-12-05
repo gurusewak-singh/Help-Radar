@@ -1,12 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X, Plus, Map, LayoutDashboard, Search, Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, Plus, Map, Search, Heart } from 'lucide-react';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 8);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -16,112 +23,86 @@ export default function Header() {
     };
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 backdrop-blur-lg border-b border-white/10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${isScrolled ? 'bg-white/80 backdrop-blur-xl shadow-sm' : 'bg-white'
+            }`}>
+            <div className="max-w-5xl mx-auto px-6">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center space-x-2 group">
-                        <div className="relative">
-                            <div className="w-10 h-10 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25 group-hover:shadow-purple-500/40 transition-shadow">
-                                <Heart className="w-5 h-5 text-white" fill="white" />
-                            </div>
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></div>
+                    <Link href="/" className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
+                            <Heart className="w-4 h-4 text-white" fill="white" />
                         </div>
-                        <div className="hidden sm:block">
-                            <h1 className="text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                                HelpRadar
-                            </h1>
-                            <p className="text-[10px] text-purple-300/70 -mt-1">Hyperlocal Community Help</p>
-                        </div>
+                        <span className="text-lg font-semibold text-stone-900 hidden sm:block">HelpRadar</span>
                     </Link>
 
                     {/* Desktop Search */}
-                    <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
-                        <div className="relative w-full">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <form onSubmit={handleSearch} className="hidden md:block flex-1 max-w-sm mx-8">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                             <input
                                 type="text"
-                                placeholder="Search for help, lost items, blood donors..."
+                                placeholder="Search requests..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                                className="w-full pl-9 pr-4 py-2 bg-stone-100 border-0 rounded-lg text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all"
                             />
                         </div>
                     </form>
 
-                    {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center space-x-2">
-                        <Link
-                            href="/map"
-                            className="flex items-center space-x-2 px-4 py-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-                        >
-                            <Map className="w-4 h-4" />
-                            <span>Map View</span>
+                    {/* Desktop Nav */}
+                    <nav className="hidden md:flex items-center gap-1">
+                        <Link href="/map" className="px-3 py-2 text-sm text-stone-600 hover:text-stone-900 rounded-lg hover:bg-stone-100 transition-colors">
+                            Map
                         </Link>
-                        <Link
-                            href="/admin"
-                            className="flex items-center space-x-2 px-4 py-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-                        >
-                            <LayoutDashboard className="w-4 h-4" />
-                            <span>Admin</span>
+                        <Link href="/admin" className="px-3 py-2 text-sm text-stone-600 hover:text-stone-900 rounded-lg hover:bg-stone-100 transition-colors">
+                            Admin
                         </Link>
                         <Link
                             href="/create"
-                            className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-xl font-medium shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 transition-all"
+                            className="ml-2 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors"
                         >
                             <Plus className="w-4 h-4" />
-                            <span>Post Request</span>
+                            New Request
                         </Link>
                     </nav>
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Menu Toggle */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+                        className="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-lg transition-colors"
                     >
-                        {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
                 </div>
 
                 {/* Mobile Menu */}
                 {isMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-white/10">
+                    <div className="md:hidden py-4 border-t border-stone-100">
                         <form onSubmit={handleSearch} className="mb-4">
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                                 <input
                                     type="text"
                                     placeholder="Search..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 transition-all"
+                                    className="w-full pl-9 pr-4 py-2.5 bg-stone-100 border-0 rounded-lg text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                                 />
                             </div>
                         </form>
-                        <div className="flex flex-col space-y-2">
-                            <Link
-                                href="/map"
-                                className="flex items-center space-x-2 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                <Map className="w-5 h-5" />
-                                <span>Map View</span>
+                        <div className="space-y-1">
+                            <Link href="/map" className="block px-3 py-2.5 text-sm text-stone-600 hover:bg-stone-50 rounded-lg" onClick={() => setIsMenuOpen(false)}>
+                                Map View
                             </Link>
-                            <Link
-                                href="/admin"
-                                className="flex items-center space-x-2 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                <LayoutDashboard className="w-5 h-5" />
-                                <span>Admin Panel</span>
+                            <Link href="/admin" className="block px-3 py-2.5 text-sm text-stone-600 hover:bg-stone-50 rounded-lg" onClick={() => setIsMenuOpen(false)}>
+                                Admin
                             </Link>
                             <Link
                                 href="/create"
-                                className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-xl font-medium shadow-lg"
+                                className="block px-4 py-3 text-sm font-medium text-center text-white bg-teal-600 rounded-lg"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                <Plus className="w-5 h-5" />
-                                <span>Post Request</span>
+                                Post New Request
                             </Link>
                         </div>
                     </div>

@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Clock, MapPin, Eye, Phone, Mail, AlertTriangle, User } from 'lucide-react';
+import { Clock, MapPin, Eye, ArrowUpRight } from 'lucide-react';
 import CategoryBadge from './CategoryBadge';
-import UrgencyIndicator from './UrgencyIndicator';
 
 interface Post {
     _id: string;
@@ -21,12 +20,10 @@ interface Post {
     images?: Array<{ url: string }>;
     views: number;
     createdAt: string;
-    reported?: number;
 }
 
 interface PostCardProps {
     post: Post;
-    showContact?: boolean;
 }
 
 function formatTimeAgo(dateString: string): string {
@@ -37,116 +34,100 @@ function formatTimeAgo(dateString: string): string {
     if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
     if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
     if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
 }
 
-function maskPhone(phone: string): string {
-    if (phone.length < 6) return phone;
-    return phone.slice(0, 2) + '****' + phone.slice(-2);
-}
-
-export default function PostCard({ post, showContact = false }: PostCardProps) {
+export default function PostCard({ post }: PostCardProps) {
     const hasImage = post.images && post.images.length > 0;
+    const isUrgent = post.urgency === 'High';
 
     return (
-        <div className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300">
-            {/* Urgency Stripe */}
-            <div className={`absolute top-0 left-0 right-0 h-1 ${post.urgency === 'High' ? 'bg-gradient-to-r from-red-500 to-orange-500' :
-                    post.urgency === 'Medium' ? 'bg-gradient-to-r from-amber-500 to-yellow-500' :
-                        'bg-gradient-to-r from-green-500 to-emerald-500'
-                }`} />
-
-            {/* Image */}
-            {hasImage && (
-                <div className="relative h-40 overflow-hidden">
-                    <img
-                        src={post.images![0].url}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
-                </div>
-            )}
-
-            <div className="p-5">
-                {/* Header */}
-                <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex flex-wrap gap-2">
-                        <CategoryBadge category={post.category} />
-                        <UrgencyIndicator urgency={post.urgency} />
-                    </div>
-                    <div className="flex items-center text-xs text-slate-400">
-                        <Eye className="w-3 h-3 mr-1" />
-                        {post.views}
-                    </div>
-                </div>
-
-                {/* Title */}
-                <Link href={`/post/${post._id}`}>
-                    <h3 className="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors line-clamp-2 mb-2">
-                        {post.title}
-                    </h3>
-                </Link>
-
-                {/* Description */}
-                <p className="text-sm text-slate-400 line-clamp-2 mb-4">
-                    {post.description}
-                </p>
-
-                {/* Location */}
-                <div className="flex items-center text-sm text-slate-400 mb-3">
-                    <MapPin className="w-4 h-4 mr-1.5 text-purple-400" />
-                    <span>{post.city}{post.area ? `, ${post.area}` : ''}</span>
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                    <div className="flex items-center text-xs text-slate-500">
-                        <Clock className="w-3 h-3 mr-1" />
-                        {formatTimeAgo(post.createdAt)}
-                    </div>
-
-                    {/* Contact Preview */}
-                    {showContact && post.contact && (
-                        <div className="flex items-center gap-2">
-                            {post.contact.phone && (
-                                <a
-                                    href={`tel:${post.contact.phone}`}
-                                    className="flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 rounded-lg text-xs hover:bg-green-500/30 transition-colors"
-                                >
-                                    <Phone className="w-3 h-3" />
-                                    {maskPhone(post.contact.phone)}
-                                </a>
-                            )}
-                            {post.contact.email && (
-                                <a
-                                    href={`mailto:${post.contact.email}`}
-                                    className="flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs hover:bg-blue-500/30 transition-colors"
-                                >
-                                    <Mail className="w-3 h-3" />
-                                </a>
-                            )}
-                        </div>
-                    )}
-
-                    {!showContact && (
-                        <Link
-                            href={`/post/${post._id}`}
-                            className="text-xs text-purple-400 hover:text-purple-300 font-medium transition-colors"
-                        >
-                            View Details →
-                        </Link>
-                    )}
-                </div>
-
-                {/* Report indicator */}
-                {post.reported && post.reported > 0 && (
-                    <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-400 rounded-full text-xs">
-                        <AlertTriangle className="w-3 h-3" />
-                        {post.reported}
+        <article className={`group bg-white rounded-lg border overflow-hidden transition-all duration-200 hover:shadow-md ${isUrgent ? 'border-red-300 ring-1 ring-red-100' : 'border-stone-200 hover:border-stone-300'
+            }`}>
+            <div className="flex">
+                {/* Image - compact on desktop */}
+                {hasImage && (
+                    <div className="relative w-32 lg:w-40 flex-shrink-0 overflow-hidden bg-stone-100">
+                        <img
+                            src={post.images![0].url}
+                            alt=""
+                            className="w-full h-full object-cover"
+                        />
+                        {isUrgent && (
+                            <div className="absolute top-2 left-2">
+                                <span className="relative flex h-2.5 w-2.5">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                                </span>
+                            </div>
+                        )}
                     </div>
                 )}
+
+                {/* Content - tighter padding */}
+                <div className="flex-1 p-4 flex flex-col min-w-0">
+                    {/* Top row: badges + urgent indicator */}
+                    <div className="flex items-center gap-2 mb-2">
+                        <CategoryBadge category={post.category} />
+                        {isUrgent && !hasImage && (
+                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                </span>
+                                Urgent
+                            </span>
+                        )}
+                        {post.urgency === 'Medium' && (
+                            <span className="px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700">
+                                Medium
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Title - single line on desktop */}
+                    <h2 className={`font-semibold leading-snug mb-1 truncate ${isUrgent ? 'text-red-900' : 'text-stone-900 group-hover:text-teal-700'
+                        }`}>
+                        <Link href={`/post/${post._id}`}>
+                            {post.title}
+                        </Link>
+                    </h2>
+
+                    {/* Description - 1 line */}
+                    <p className="text-sm text-stone-500 truncate mb-2">
+                        {post.description}
+                    </p>
+
+                    {/* Footer - inline */}
+                    <div className="flex items-center justify-between mt-auto">
+                        <div className="flex items-center gap-3 text-xs text-stone-400">
+                            <span className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {post.city}
+                            </span>
+                            <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {formatTimeAgo(post.createdAt)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                                <Eye className="w-3 h-3" />
+                                {post.views}
+                            </span>
+                        </div>
+
+                        <Link
+                            href={`/post/${post._id}`}
+                            className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded transition-colors ${isUrgent
+                                    ? 'text-white bg-red-600 hover:bg-red-700'
+                                    : 'text-teal-700 bg-teal-50 hover:bg-teal-100'
+                                }`}
+                        >
+                            {isUrgent ? 'Help' : 'View'}
+                            <ArrowUpRight className="w-3 h-3" />
+                        </Link>
+                    </div>
+                </div>
             </div>
-        </div>
+        </article>
     );
 }
