@@ -108,7 +108,7 @@ function HomeContent() {
               Community Help Network
             </h1>
             <p className="text-lg text-stone-600 mb-6">
-              Connect with neighbors, find help when you need it, and support others in your community.
+              Connect with neighbours, find help when you need it, and support others in your community.
             </p>
             <div className="flex items-center gap-3">
               <Link
@@ -158,17 +158,17 @@ function HomeContent() {
               key={key}
               onClick={() => handleFilterChange({ ...filters, category: filters.category === key ? '' : key })}
               className={`group p-4 rounded-xl text-left transition-all ${filters.category === key
-                  ? `bg-${color}-50 border-2 border-${color}-200`
-                  : 'bg-white border border-stone-200 hover:border-stone-300 hover:shadow-sm'
+                ? `bg-${color}-50 border-2 border-${color}-200`
+                : 'bg-white border border-stone-200 hover:border-stone-300 hover:shadow-sm'
                 }`}
             >
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${filters.category === key
-                  ? `bg-${color}-100`
-                  : 'bg-stone-100 group-hover:bg-stone-200'
+                ? `bg-${color}-100`
+                : 'bg-stone-100 group-hover:bg-stone-200'
                 }`}>
                 <Icon className={`w-5 h-5 ${color === 'red' ? 'text-red-600' :
-                    color === 'blue' ? 'text-blue-600' :
-                      color === 'amber' ? 'text-amber-600' : 'text-emerald-600'
+                  color === 'blue' ? 'text-blue-600' :
+                    color === 'amber' ? 'text-amber-600' : 'text-emerald-600'
                   }`} />
               </div>
               <p className="font-medium text-stone-900 mb-0.5">{label}</p>
@@ -265,7 +265,7 @@ function HomeContent() {
                     <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 text-xs font-bold text-teal-700">2</div>
                     <div>
                       <p className="text-sm font-medium text-stone-900">Community responds</p>
-                      <p className="text-xs text-stone-500">Neighbors see and reach out</p>
+                      <p className="text-xs text-stone-500">Neighbours see and reach out</p>
                     </div>
                   </div>
                   <div className="flex gap-3">

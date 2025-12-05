@@ -6,8 +6,8 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "HelpRadar — Local Community Support",
-  description: "Your neighborhood's helping hand. Find and offer help, report lost items, coordinate blood donations.",
-  keywords: ["community help", "local support", "blood donation", "lost and found", "neighborhood"],
+  description: "Your neighbourhood's helping hand. Find and offer help, report lost items, coordinate blood donations.",
+  keywords: ["community help", "local support", "blood donation", "lost and found", "neighbourhood"],
 };
 
 export default function RootLayout({
@@ -48,7 +48,7 @@ export default function RootLayout({
                   <span className="text-lg font-semibold text-stone-900">HelpRadar</span>
                 </Link>
                 <p className="text-stone-500 text-sm leading-relaxed max-w-xs">
-                  Connecting neighbors to help each other. Built for communities that care.
+                  Connecting neighbours to help each other. Built for communities that care.
                 </p>
               </div>
 
