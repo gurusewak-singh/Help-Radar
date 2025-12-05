@@ -2,12 +2,16 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Plus, Search, Heart } from 'lucide-react';
+import { Menu, X, Plus, Search, Heart, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import AuthRequiredModal from './AuthRequiredModal';
 
 export default function Header() {
+    const { user, isLoggedIn, logout, isLoading } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isScrolled, setIsScrolled] = useState(false);
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -28,6 +32,13 @@ export default function Header() {
         e.preventDefault();
         if (searchQuery.trim()) {
             window.location.href = `/?q=${encodeURIComponent(searchQuery.trim())}`;
+        }
+    };
+
+    const handleNewRequest = (e: React.MouseEvent) => {
+        if (!isLoggedIn) {
+            e.preventDefault();
+            setShowAuthModal(true);
         }
     };
 
@@ -80,22 +91,45 @@ export default function Header() {
 
                             <div className="h-4 w-px bg-stone-200 mx-2" />
 
-                            <Link
-                                href="/login"
-                                className="px-3 py-2 text-sm font-medium text-stone-600 hover:text-teal-600 hover:bg-teal-50 rounded-md transition-all"
-                            >
-                                Log in
-                            </Link>
+                            {!isLoading && (
+                                isLoggedIn ? (
+                                    <>
+                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-stone-100 rounded-lg">
+                                            <div className="w-7 h-7 bg-teal-600 rounded-full flex items-center justify-center">
+                                                <User className="w-4 h-4 text-white" />
+                                            </div>
+                                            <span className="text-sm font-medium text-stone-700">{user?.name}</span>
+                                        </div>
+                                        <button
+                                            onClick={logout}
+                                            className="px-3 py-2 text-sm font-medium text-stone-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-all flex items-center gap-1.5"
+                                        >
+                                            <LogOut className="w-4 h-4" />
+                                            Logout
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            href="/login"
+                                            className="px-3 py-2 text-sm font-medium text-stone-600 hover:text-teal-600 hover:bg-teal-50 rounded-md transition-all"
+                                        >
+                                            Log in
+                                        </Link>
 
-                            <Link
-                                href="/register"
-                                className="px-3 py-2 text-sm font-medium text-teal-600 hover:text-teal-700 hover:bg-teal-50 rounded-md transition-all"
-                            >
-                                Sign up
-                            </Link>
+                                        <Link
+                                            href="/register"
+                                            className="px-3 py-2 text-sm font-medium text-teal-600 hover:text-teal-700 hover:bg-teal-50 rounded-md transition-all"
+                                        >
+                                            Sign up
+                                        </Link>
+                                    </>
+                                )
+                            )}
 
                             <Link
                                 href="/create"
+                                onClick={handleNewRequest}
                                 className="flex items-center gap-1.5 h-9 px-4 ml-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 active:bg-teal-800 transition-colors"
                             >
                                 <Plus className="w-4 h-4" />
@@ -154,27 +188,49 @@ export default function Header() {
                         </div>
 
                         <div className="border-t border-stone-100">
-                            <Link
-                                href="/login"
-                                className="block px-4 py-3 text-sm font-medium text-stone-600 hover:bg-stone-50 active:bg-stone-100 transition-colors"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Log in
-                            </Link>
-                            <Link
-                                href="/register"
-                                className="block px-4 py-3 text-sm font-medium text-teal-600 hover:bg-teal-50 active:bg-teal-100 transition-colors"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Sign up
-                            </Link>
+                            {isLoggedIn ? (
+                                <>
+                                    <div className="px-4 py-3 flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+                                            <User className="w-4 h-4 text-white" />
+                                        </div>
+                                        <span className="text-sm font-medium text-stone-700">{user?.name}</span>
+                                    </div>
+                                    <button
+                                        onClick={() => { logout(); setIsMenuOpen(false); }}
+                                        className="block w-full px-4 py-3 text-sm font-medium text-left text-red-600 hover:bg-red-50 transition-colors"
+                                    >
+                                        Log out
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="block px-4 py-3 text-sm font-medium text-stone-600 hover:bg-stone-50 active:bg-stone-100 transition-colors"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Log in
+                                    </Link>
+                                    <Link
+                                        href="/register"
+                                        className="block px-4 py-3 text-sm font-medium text-teal-600 hover:bg-teal-50 active:bg-teal-100 transition-colors"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Sign up
+                                    </Link>
+                                </>
+                            )}
                         </div>
 
                         <div className="p-4 border-t border-stone-100">
                             <Link
                                 href="/create"
                                 className="flex items-center justify-center gap-1.5 w-full h-10 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 active:bg-teal-800 transition-colors"
-                                onClick={() => setIsMenuOpen(false)}
+                                onClick={(e) => {
+                                    setIsMenuOpen(false);
+                                    handleNewRequest(e);
+                                }}
                             >
                                 <Plus className="w-4 h-4" />
                                 Post New Request
@@ -183,6 +239,14 @@ export default function Header() {
                     </div>
                 </div>
             )}
+
+            {/* Auth Required Modal */}
+            <AuthRequiredModal
+                isOpen={showAuthModal}
+                onClose={() => setShowAuthModal(false)}
+                message="Please log in or create an account to post a help request."
+            />
         </>
     );
 }
+

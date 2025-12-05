@@ -1,10 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, Heart, AlertCircle, Check, Sparkles, Users, Shield, Zap } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function RegisterPage() {
+    const router = useRouter();
+    const { register, isLoggedIn } = useAuth();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         name: '',
@@ -19,6 +23,12 @@ export default function RegisterPage() {
     const [error, setError] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
+
+    // Redirect if already logged in
+    if (isLoggedIn) {
+        router.push('/');
+        return null;
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -79,9 +89,19 @@ export default function RegisterPage() {
         }
 
         setIsLoading(true);
-        setTimeout(() => {
-            window.location.href = '/login?registered=true';
-        }, 1500);
+
+        try {
+            const success = await register(formData.email, formData.password, formData.name);
+            if (success) {
+                router.push('/');
+            } else {
+                setError('Registration failed. Please try again.');
+            }
+        } catch {
+            setError('An error occurred. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const InputField = ({

@@ -1,10 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Heart, AlertCircle, Sparkles } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
+    const router = useRouter();
+    const { login, isLoggedIn } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -12,19 +16,29 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
+    // Redirect if already logged in
+    if (isLoggedIn) {
+        router.push('/');
+        return null;
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
 
-        setTimeout(() => {
-            if (email && password) {
-                window.location.href = '/';
+        try {
+            const success = await login(email, password);
+            if (success) {
+                router.push('/');
             } else {
-                setError('Please fill in all fields');
+                setError('Invalid email or password');
             }
+        } catch {
+            setError('An error occurred. Please try again.');
+        } finally {
             setIsLoading(false);
-        }, 1000);
+        }
     };
 
     return (
