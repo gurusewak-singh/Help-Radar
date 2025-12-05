@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-stone-50 text-stone-900 antialiased">
         <Header />
 
-        <main className="pt-16">
+        <main>
           {children}
         </main>
 
