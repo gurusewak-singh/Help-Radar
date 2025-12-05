@@ -60,7 +60,7 @@ export default function RootLayout({
                 <div>
                   <h4 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Platform</h4>
                   <ul className="space-y-2.5">
-                    <li><Link href="/" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Browse Requests</Link></li>
+                    <li><Link href="/requests" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Browse Requests</Link></li>
                     <li><Link href="/create" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Post Request</Link></li>
                     <li><Link href="/map" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Map View</Link></li>
                   </ul>
@@ -69,9 +69,9 @@ export default function RootLayout({
                 <div>
                   <h4 className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Legal</h4>
                   <ul className="space-y-2.5">
-                    <li><a href="#" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Privacy</a></li>
-                    <li><a href="#" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Terms</a></li>
-                    <li><a href="#" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Contact</a></li>
+                    <li><Link href="/privacy" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Privacy</Link></li>
+                    <li><Link href="/terms" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Terms</Link></li>
+                    <li><Link href="/contact" className="text-sm text-stone-600 hover:text-teal-600 transition-colors">Contact</Link></li>
                   </ul>
                 </div>
               </div>

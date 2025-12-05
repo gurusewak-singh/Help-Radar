@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.user) {
                 const authenticatedUser: User = {
                     id: data.user.id,
@@ -130,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.user) {
                 const registeredUser: User = {
                     id: data.user.id,
