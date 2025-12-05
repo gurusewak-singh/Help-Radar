@@ -2,16 +2,24 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+// Admin emails - users with these emails get admin access
+const ADMIN_EMAILS = [
+    'admin@helpradar.com',
+    'guruop.gsb@gmail.com',
+];
+
 interface User {
     id: string;
     email: string;
     name: string;
+    isAdmin: boolean;
 }
 
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     isLoggedIn: boolean;
+    isAdmin: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
     register: (email: string, password: string, name: string) => Promise<boolean>;
@@ -23,12 +31,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Check if email is admin
+    const checkIsAdmin = (email: string): boolean => {
+        return ADMIN_EMAILS.some(adminEmail =>
+            adminEmail.toLowerCase() === email.toLowerCase()
+        );
+    };
+
     // Check for existing session on mount
     useEffect(() => {
         const storedUser = localStorage.getItem('helpradar_user');
         if (storedUser) {
             try {
-                setUser(JSON.parse(storedUser));
+                const parsedUser = JSON.parse(storedUser);
+                // Re-check admin status on load
+                parsedUser.isAdmin = checkIsAdmin(parsedUser.email);
+                setUser(parsedUser);
             } catch {
                 localStorage.removeItem('helpradar_user');
             }
@@ -39,10 +57,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = async (email: string, password: string): Promise<boolean> => {
         // Mock login - in production, this would call an API
         if (email && password) {
+            const isAdmin = checkIsAdmin(email);
             const mockUser: User = {
                 id: 'user_' + Date.now(),
                 email,
-                name: email.split('@')[0]
+                name: email.split('@')[0],
+                isAdmin
             };
             setUser(mockUser);
             localStorage.setItem('helpradar_user', JSON.stringify(mockUser));
@@ -54,10 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const register = async (email: string, password: string, name: string): Promise<boolean> => {
         // Mock registration - in production, this would call an API
         if (email && password && name) {
+            const isAdmin = checkIsAdmin(email);
             const mockUser: User = {
                 id: 'user_' + Date.now(),
                 email,
-                name
+                name,
+                isAdmin
             };
             setUser(mockUser);
             localStorage.setItem('helpradar_user', JSON.stringify(mockUser));
@@ -76,6 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             user,
             isLoading,
             isLoggedIn: !!user,
+            isAdmin: user?.isAdmin ?? false,
             login,
             logout,
             register

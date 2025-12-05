@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { ArrowLeft, Trash2, Eye, AlertTriangle, CheckCircle, RefreshCw, MapPin, Loader2, TrendingUp, Clock, Search, Heart, HelpCircle, Gift } from 'lucide-react';
+import { ArrowLeft, Trash2, Eye, AlertTriangle, CheckCircle, RefreshCw, MapPin, Loader2, TrendingUp, Clock, Search, Heart, HelpCircle, Gift, ShieldX, LogIn } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Dynamic import for charts (client-side only)
 const AreaChart = dynamic(() => import('recharts').then(mod => mod.AreaChart), { ssr: false });
@@ -90,6 +92,9 @@ function formatTimeAgo(dateString: string): string {
 }
 
 export default function AdminPage() {
+    const { isLoggedIn, isAdmin, isLoading: authLoading, user } = useAuth();
+    const router = useRouter();
+
     const [posts, setPosts] = useState<Post[]>([]);
     const [stats, setStats] = useState<Stats | null>(null);
     const [loading, setLoading] = useState(true);
@@ -172,6 +177,63 @@ export default function AdminPage() {
         return stats?.topCities?.slice(0, 5) || [];
     }, [stats]);
 
+    // Auth loading state
+    if (authLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Loader2 className="w-6 h-6 text-teal-600 animate-spin" />
+            </div>
+        );
+    }
+
+    // Not logged in
+    if (!isLoggedIn) {
+        return (
+            <div className="min-h-[60vh] flex items-center justify-center px-4">
+                <div className="text-center max-w-md">
+                    <div className="w-16 h-16 bg-stone-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <LogIn className="w-8 h-8 text-stone-400" />
+                    </div>
+                    <h1 className="text-xl font-bold text-stone-900 mb-2">Login Required</h1>
+                    <p className="text-stone-500 mb-6">Please log in to access the admin dashboard.</p>
+                    <Link
+                        href="/login"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 text-white font-medium rounded-xl hover:bg-teal-700 transition-colors"
+                    >
+                        <LogIn className="w-4 h-4" />
+                        Log In
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    // Not an admin
+    if (!isAdmin) {
+        return (
+            <div className="min-h-[60vh] flex items-center justify-center px-4">
+                <div className="text-center max-w-md">
+                    <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <ShieldX className="w-8 h-8 text-red-500" />
+                    </div>
+                    <h1 className="text-xl font-bold text-stone-900 mb-2">Access Denied</h1>
+                    <p className="text-stone-500 mb-2">You don&apos;t have permission to access the admin dashboard.</p>
+                    <p className="text-sm text-stone-400 mb-6">
+                        Logged in as: <span className="font-medium text-stone-600">{user?.email}</span>
+                    </p>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-stone-100 text-stone-700 font-medium rounded-xl hover:bg-stone-200 transition-colors"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        Go Back Home
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    // Data loading state
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
