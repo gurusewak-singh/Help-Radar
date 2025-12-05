@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Post from '@/models/Post';
 import { validatePostInput, sanitizeText, checkRateLimit } from '@/lib/validators';
-import { calculatePriorityScore, analyzePriority } from '@/lib/priorityEngine';
+import { analyzePriority } from '@/lib/priorityEngine';
+import { uploadImage, UploadResult } from '@/lib/cloudinary';
 
 // GET /api/posts - List posts with filters, search, and pagination
 export async function GET(request: NextRequest) {
@@ -108,6 +109,26 @@ export async function POST(request: NextRequest) {
 
         const body = await request.json();
 
+        // Upload images to Cloudinary
+        const uploadedImages: UploadResult[] = [];
+        if (Array.isArray(body.images) && body.images.length > 0) {
+            for (const img of body.images) {
+                if (img.url && img.url.startsWith('data:')) {
+                    // Upload base64 image to Cloudinary
+                    try {
+                        const result = await uploadImage(img.url, 'helpradar/posts');
+                        uploadedImages.push(result);
+                    } catch (uploadError) {
+                        console.error('Image upload failed:', uploadError);
+                        // Continue without this image
+                    }
+                } else if (img.url && img.url.startsWith('http')) {
+                    // Image is already a URL, keep it
+                    uploadedImages.push({ url: img.url, public_id: img.public_id || '' });
+                }
+            }
+        }
+
         // Sanitize inputs
         const sanitizedData = {
             title: sanitizeText(body.title),
@@ -123,7 +144,7 @@ export async function POST(request: NextRequest) {
                 email: body.contact.email
             } : undefined,
             urgency: body.urgency,
-            images: body.images
+            images: uploadedImages
         };
 
         // Validate input
@@ -163,14 +184,29 @@ export async function POST(request: NextRequest) {
         const expiryDays = parseInt(process.env.POST_EXPIRY_DAYS || '7');
         postData.expiresAt = new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000);
 
+        console.log('Creating post with data:', JSON.stringify(postData, null, 2));
+
         const post = new Post(postData);
+        
+        // Validate the post before saving
+        const validationError = post.validateSync();
+        if (validationError) {
+            console.error('Mongoose validation error:', validationError);
+            return NextResponse.json(
+                { error: 'Validation failed', details: validationError.message },
+                { status: 400 }
+            );
+        }
+
         await post.save();
 
         return NextResponse.json({ post, message: 'Post created successfully' }, { status: 201 });
     } catch (error) {
         console.error('POST /api/posts error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('Error details:', errorMessage);
         return NextResponse.json(
-            { error: 'Failed to create post' },
+            { error: 'Failed to create post', details: errorMessage },
             { status: 500 }
         );
     }

@@ -1,0 +1,269 @@
+2025-12-05T10:11:46.732340Z  INFO tailwindcss_oxide::scanner: Provided sources:
+2025-12-05T10:11:46.732479Z  INFO tailwindcss_oxide::scanner: Source: PublicSourceEntry { base: "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar", pattern: "**/*", negated: false }
+2025-12-05T10:11:46.732943Z  INFO tailwindcss_oxide::scanner: Optimized sources:
+2025-12-05T10:11:46.733034Z  INFO tailwindcss_oxide::scanner: Source: Auto { base: "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar" }
+2025-12-05T10:11:46.735327Z  INFO scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.737082Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\.env.local"
+2025-12-05T10:11:46.745553Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\eslint.config.mjs"
+2025-12-05T10:11:46.745658Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\next.config.ts"
+2025-12-05T10:11:46.745945Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\package.json"
+2025-12-05T10:11:46.746012Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\postcss.config.mjs"
+2025-12-05T10:11:46.746318Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:11:46.746613Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\file.svg"
+2025-12-05T10:11:46.746735Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\globe.svg"
+2025-12-05T10:11:46.746843Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\next.svg"
+2025-12-05T10:11:46.747009Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\vercel.svg"
+2025-12-05T10:11:46.747127Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\window.svg"
+2025-12-05T10:11:46.747324Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\README.md"
+2025-12-05T10:11:46.747470Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:11:46.747731Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:11:46.747927Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:11:46.748107Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin\\page.tsx"
+2025-12-05T10:11:46.748246Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:11:46.748553Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:11:46.748763Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\route.ts"
+2025-12-05T10:11:46.748926Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:11:46.749202Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:11:46.749397Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report\\route.ts"
+2025-12-05T10:11:46.749533Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\route.ts"
+2025-12-05T10:11:46.749810Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:11:46.749970Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats\\route.ts"
+2025-12-05T10:11:46.750125Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:11:46.750369Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest\\route.ts"
+2025-12-05T10:11:46.750555Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:11:46.750700Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create\\page.tsx"
+2025-12-05T10:11:46.750819Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\globals.css"
+2025-12-05T10:11:46.750884Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\layout.tsx"
+2025-12-05T10:11:46.751070Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:11:46.751226Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map\\page.tsx"
+2025-12-05T10:11:46.751311Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\page.tsx"
+2025-12-05T10:11:46.751426Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:11:46.751779Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:11:46.751981Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]\\page.tsx"
+2025-12-05T10:11:46.752223Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:11:46.752434Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\CategoryBadge.tsx"
+2025-12-05T10:11:46.752521Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\ContactModal.tsx"
+2025-12-05T10:11:46.752676Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\CreatePostForm.tsx"
+2025-12-05T10:11:46.752813Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\FiltersBar.tsx"
+2025-12-05T10:11:46.752900Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\Header.tsx"
+2025-12-05T10:11:46.753066Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\MapView.tsx"
+2025-12-05T10:11:46.753159Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\Pagination.tsx"
+2025-12-05T10:11:46.753240Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\PostCard.tsx"
+2025-12-05T10:11:46.753352Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\StatsCard.tsx"
+2025-12-05T10:11:46.753481Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\UrgencyIndicator.tsx"
+2025-12-05T10:11:46.753830Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:11:46.754051Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\cloudinary.ts"
+2025-12-05T10:11:46.754121Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\dbConnect.ts"
+2025-12-05T10:11:46.754249Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\priorityEngine.ts"
+2025-12-05T10:11:46.754315Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\validators.ts"
+2025-12-05T10:11:46.754482Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:11:46.754631Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\Post.ts"
+2025-12-05T10:11:46.754689Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\Report.ts"
+2025-12-05T10:11:46.754771Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\User.ts"
+2025-12-05T10:11:46.754920Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\tsconfig.json"
+2025-12-05T10:11:46.755022Z  INFO scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.755032Z  INFO extract_candidates: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.755038Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.755041Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 40 file(s)
+2025-12-05T10:11:46.755532Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\.env.local"
+2025-12-05T10:11:46.755568Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\page.tsx"
+2025-12-05T10:11:46.755582Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\StatsCard.tsx"
+2025-12-05T10:11:46.755606Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\README.md"
+2025-12-05T10:11:46.755649Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\eslint.config.mjs"
+2025-12-05T10:11:46.755644Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\validators.ts"
+2025-12-05T10:11:46.755706Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\UrgencyIndicator.tsx"
+2025-12-05T10:11:46.755711Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\next.config.ts"
+2025-12-05T10:11:46.755725Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]\\page.tsx"
+2025-12-05T10:11:46.755779Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\package.json"
+2025-12-05T10:11:46.755786Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\cloudinary.ts"
+2025-12-05T10:11:46.755811Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\Post.ts"
+2025-12-05T10:11:46.755853Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\postcss.config.mjs"
+2025-12-05T10:11:46.755862Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\dbConnect.ts"
+2025-12-05T10:11:46.755863Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin\\page.tsx"
+2025-12-05T10:11:46.755879Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\CategoryBadge.tsx"
+2025-12-05T10:11:46.755943Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\file.svg"
+2025-12-05T10:11:46.755963Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib\\priorityEngine.ts"
+2025-12-05T10:11:46.755975Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\route.ts"
+2025-12-05T10:11:46.755965Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\Report.ts"
+2025-12-05T10:11:46.755998Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\ContactModal.tsx"
+2025-12-05T10:11:46.756013Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\globe.svg"
+2025-12-05T10:11:46.756008Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats\\route.ts"
+2025-12-05T10:11:46.756072Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create\\page.tsx"
+2025-12-05T10:11:46.756226Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest\\route.ts"
+2025-12-05T10:11:46.756077Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\User.ts"
+2025-12-05T10:11:46.756119Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\next.svg"
+2025-12-05T10:11:46.756278Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\tsconfig.json"
+2025-12-05T10:11:46.756281Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map\\page.tsx"
+2025-12-05T10:11:46.756155Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\FiltersBar.tsx"
+2025-12-05T10:11:46.756171Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\CreatePostForm.tsx"
+2025-12-05T10:11:46.756190Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report\\route.ts"
+2025-12-05T10:11:46.756321Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\MapView.tsx"
+2025-12-05T10:11:46.756409Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\route.ts"
+2025-12-05T10:11:46.756340Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\vercel.svg"
+2025-12-05T10:11:46.756435Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\PostCard.tsx"
+2025-12-05T10:11:46.756447Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\Header.tsx"
+2025-12-05T10:11:46.756213Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\layout.tsx"
+2025-12-05T10:11:46.756366Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components\\Pagination.tsx"
+2025-12-05T10:11:46.756386Z  INFO tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public\\window.svg"
+2025-12-05T10:11:46.756557Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.756569Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.756575Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.758223Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.758343Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.758357Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.758477Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 1 file(s)
+2025-12-05T10:11:46.758597Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\globals.css"
+2025-12-05T10:11:46.758612Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.758657Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.758755Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.758936Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.758950Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.759348Z  INFO extract_candidates: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.759924Z  INFO get_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.759998Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.762376Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:11:46.762867Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:11:46.763085Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:11:46.763429Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:11:46.763806Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:11:46.764088Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:11:46.764436Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:11:46.764722Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:11:46.765245Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:11:46.765753Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:11:46.766254Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:11:46.767078Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:11:46.768053Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:11:46.768449Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:11:46.769145Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:11:46.770457Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:11:46.771331Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:11:46.771994Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.772227Z  INFO get_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.772744Z  INFO get_globs: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.772758Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:11:46.775331Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:11:46.775966Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:11:46.776544Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:11:46.776890Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:11:46.777725Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:11:46.778082Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:11:46.778361Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:11:46.778594Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:11:46.778982Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:11:46.779438Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:11:46.779923Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:11:46.780447Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:11:46.780891Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:11:46.781192Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:11:46.781664Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:11:46.782550Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:11:46.783095Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:11:46.783659Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:11:46.789717Z  INFO get_globs: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.322405Z  INFO scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.324674Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:13:02.325115Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:13:02.325273Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:13:02.325432Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:13:02.325627Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:13:02.325780Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:13:02.325896Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\route.ts"
+2025-12-05T10:13:02.325999Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:13:02.326157Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:13:02.326438Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:13:02.326640Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:13:02.326887Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:13:02.327163Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:13:02.327396Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:13:02.327546Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:13:02.327790Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:13:02.328352Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:13:02.328674Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:13:02.329272Z  INFO scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.329288Z  INFO extract_candidates: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.329293Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.329296Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 1 file(s)
+2025-12-05T10:13:02.329383Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\route.ts"
+2025-12-05T10:13:02.329393Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.329397Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.329400Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.329622Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.329648Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.329861Z  INFO extract_candidates: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.330716Z  INFO get_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.330739Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.333304Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:13:02.333859Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:13:02.334086Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:13:02.334344Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:13:02.334638Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:13:02.334846Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:13:02.335089Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:13:02.335296Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:13:02.335680Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:13:02.335950Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:13:02.336243Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:13:02.336614Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:13:02.336843Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:13:02.336999Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:13:02.337269Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:13:02.337860Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:13:02.338176Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:13:02.338562Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.338928Z  INFO get_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:13:02.339210Z  INFO get_globs: tailwindcss_oxide::scanner: enter
+2025-12-05T10:13:02.339228Z  INFO get_globs: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.617578Z  INFO scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.619503Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:14:57.619928Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:14:57.620086Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:14:57.620241Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:14:57.620442Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:14:57.620607Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:14:57.620801Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:14:57.620960Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:14:57.621238Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:14:57.621436Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:14:57.621666Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:14:57.621996Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:14:57.622240Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:14:57.622394Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:14:57.622664Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:14:57.623529Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:14:57.623910Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:14:57.624042Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\Post.ts"
+2025-12-05T10:14:57.624441Z  INFO scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.624455Z  INFO extract_candidates: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.624460Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.624462Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 1 file(s)
+2025-12-05T10:14:57.624581Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models\\Post.ts"
+2025-12-05T10:14:57.624592Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.624596Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.624599Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.625048Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.625064Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.625162Z  INFO extract_candidates: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.625591Z  INFO get_files: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.625597Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.627666Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\public"
+2025-12-05T10:14:57.628173Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src"
+2025-12-05T10:14:57.628384Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app"
+2025-12-05T10:14:57.628589Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\admin"
+2025-12-05T10:14:57.628856Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api"
+2025-12-05T10:14:57.629054Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts"
+2025-12-05T10:14:57.629299Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]"
+2025-12-05T10:14:57.629497Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\posts\\[id]\\report"
+2025-12-05T10:14:57.629850Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\stats"
+2025-12-05T10:14:57.630097Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\api\\suggest"
+2025-12-05T10:14:57.630346Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\create"
+2025-12-05T10:14:57.630661Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\map"
+2025-12-05T10:14:57.630870Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post"
+2025-12-05T10:14:57.631012Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\app\\post\\[id]"
+2025-12-05T10:14:57.631259Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\components"
+2025-12-05T10:14:57.631813Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\lib"
+2025-12-05T10:14:57.632179Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "C:\\Users\\LOQ\\OneDrive\\Desktop\\Help-Radar\\src\\models"
+2025-12-05T10:14:57.632512Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.632694Z  INFO get_files: tailwindcss_oxide::scanner: exit
+2025-12-05T10:14:57.632853Z  INFO get_globs: tailwindcss_oxide::scanner: enter
+2025-12-05T10:14:57.632859Z  INFO get_globs: tailwindcss_oxide::scanner: exit

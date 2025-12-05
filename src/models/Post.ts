@@ -64,11 +64,11 @@ const PostSchema = new Schema<IPost>({
         type: {
             type: String,
             enum: ['Point'],
-            default: 'Point'
+            required: false
         },
         coordinates: {
             type: [Number],
-            default: undefined
+            required: false
         }
     },
     contact: {
@@ -172,7 +172,8 @@ function calculatePriority(post: IPost): number {
     score += categoryScores[post.category] || 20;
 
     // Recency boost (newer posts get higher score)
-    const hoursOld = (Date.now() - post.createdAt.getTime()) / (1000 * 60 * 60);
+    const createdTime = post.createdAt ? post.createdAt.getTime() : Date.now();
+    const hoursOld = (Date.now() - createdTime) / (1000 * 60 * 60);
     score += Math.max(0, 50 - hoursOld);
 
     return Math.round(score);
