@@ -72,22 +72,22 @@ export async function sendContactEmail(params: ContactEmailParams) {
         from: `"HelpRadar" <${process.env.EMAIL_FROM || process.env.SMTP_USER}>`,
         to: postCreatorEmail,
         replyTo: helperEmail,
-        subject: `🤝 Someone wants to help: ${postTitle}`,
+        subject: `🤝 ${helperName} wants to contact you: ${postTitle}`,
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h1 style="color: #0d9488; margin: 0;">HelpRadar</h1>
-                    <p style="color: #78716c; margin-top: 5px;">Someone wants to help!</p>
+                    <p style="color: #78716c; margin-top: 5px;">Someone wants to contact you!</p>
                 </div>
                 
                 <p style="color: #44403c; font-size: 16px;">Hi ${postCreatorName},</p>
                 
                 <p style="color: #44403c; font-size: 16px;">
-                    Great news! Someone from the HelpRadar community has offered to help with your request:
+                    Great news! ${helperName} from the HelpRadar community has offered to connect for your post:
                 </p>
                 
                 <div style="background: #f5f5f4; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0d9488;">
-                    <p style="color: #78716c; font-size: 12px; margin: 0 0 5px 0;">YOUR REQUEST</p>
+                    <p style="color: #78716c; font-size: 12px; margin: 0 0 5px 0;">YOUR POST</p>
                     <p style="color: #44403c; font-size: 16px; font-weight: 600; margin: 0;">${postTitle}</p>
                 </div>
                 

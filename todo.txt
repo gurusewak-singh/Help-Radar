@@ -3,8 +3,8 @@
 3 in profile in My requests all requests are visible instead of only mine -> Suar !Done
 4 Create a terms and conditions page -> !Done
 5 Footer links aren't working (browse requests, privacy, terms, contact) -> Suar !Done
-6 filters css is to be done
+6 filters css is to be done -> !Done
 7 Google OAuth -> Guru !Done
 8 Forgot password functionality to be added -> !Done
-9 Add email functionality for other users send mail for helping out -> Suar
+9 Add email functionality for other users send mail for helping out -> !Done
 10 Add notifications functionality when other users send mail for helping out -> Suar

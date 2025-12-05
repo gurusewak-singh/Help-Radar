@@ -113,7 +113,7 @@ function RequestsContent() {
     const handleFilterChange = (newFilters: Filters) => { setFilters(newFilters); setCurrentPage(1); };
 
     return (
-        <div className="min-h-screen bg-stone-50 pt-16">
+        <div className="min-h-screen bg-stone-50 pt-4">
             {/* Header */}
             <div className="bg-white border-b border-stone-200">
                 <div className="max-w-6xl mx-auto px-6 py-6">

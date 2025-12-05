@@ -173,7 +173,8 @@ export async function POST(request: NextRequest) {
             ...sanitizedData,
             status: 'active',
             views: 0,
-            reported: 0
+            reported: 0,
+            createdBy: body.userId || null // Store the user ID who created the post
         };
 
         // Add location if coordinates provided

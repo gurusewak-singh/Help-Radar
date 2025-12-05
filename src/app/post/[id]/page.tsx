@@ -2,9 +2,10 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, MapPin, Clock, Eye, Phone, User, Flag, Share2, CheckCircle, Loader2, Heart, HelpCircle, Search, Gift, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Eye, Phone, User, Flag, Share2, CheckCircle, Loader2, Heart, HelpCircle, Search, Gift, MessageCircle, CheckCircle2 } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
 import ContactHelperModal from '@/components/ContactHelperModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Post {
     _id: string;
@@ -20,6 +21,7 @@ interface Post {
     createdAt: string;
     expiresAt?: string;
     status: string;
+    createdBy?: string;
 }
 
 const MOCK_POST: Post = {
@@ -67,12 +69,14 @@ const formatDate = (d: string) => new Date(d).toLocaleDateString('en-IN', { day:
 
 export default function PostDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
+    const { user } = useAuth();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
     const [showContact, setShowContact] = useState(false);
     const [showContactHelper, setShowContactHelper] = useState(false);
     const [copied, setCopied] = useState(false);
     const [reported, setReported] = useState(false);
+    const [markingComplete, setMarkingComplete] = useState(false);
 
     useEffect(() => {
         fetch(`/api/posts/${id}`)
@@ -90,6 +94,31 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
     };
 
     const report = () => { setReported(true); };
+
+    // Only post creator can mark complete from post page (admin uses admin panel)
+    const isPostCreator = user && post?.createdBy && user.id === post.createdBy;
+    const canMarkComplete = isPostCreator && post?.status === 'active';
+
+    const handleMarkComplete = async () => {
+        if (!post || markingComplete) return;
+        
+        setMarkingComplete(true);
+        try {
+            const res = await fetch(`/api/posts/${post._id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'resolved' })
+            });
+            
+            if (res.ok) {
+                setPost({ ...post, status: 'resolved' });
+            }
+        } catch (e) {
+            console.error('Failed to mark as complete:', e);
+        } finally {
+            setMarkingComplete(false);
+        }
+    };
 
     if (loading) return <div className="flex justify-center py-32"><Loader2 className="w-6 h-6 text-teal-600 animate-spin" /></div>;
     if (!post) return <div className="text-center py-32"><p className="text-stone-500">Post not found</p><Link href="/" className="text-teal-600 mt-2 block">← Back</Link></div>;
@@ -119,8 +148,16 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 <div className="flex gap-10">
                     {/* Left: Main Content */}
                     <div className="flex-1 min-w-0">
+                        {/* Resolved Banner */}
+                        {post.status === 'resolved' && (
+                            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
+                                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                <span className="text-sm font-medium text-green-700">This request has been resolved</span>
+                            </div>
+                        )}
+
                         {/* Urgent */}
-                        {post.urgency === 'High' && (
+                        {post.urgency === 'High' && post.status === 'active' && (
                             <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 bg-red-50 border border-red-100 rounded-full">
                                 <span className="relative flex h-2 w-2"><span className="animate-ping absolute h-full w-full rounded-full bg-red-400 opacity-75" /><span className="relative rounded-full h-2 w-2 bg-red-500" /></span>
                                 <span className="text-sm font-medium text-red-700">Urgent</span>
@@ -160,13 +197,35 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                         <div className="flex gap-6 text-sm pb-6 border-b border-stone-100">
                             <div><span className="text-stone-400 block mb-0.5">Posted on</span><span className="text-stone-900 font-medium">{formatDate(post.createdAt)}</span></div>
                             {post.expiresAt && <div><span className="text-stone-400 block mb-0.5">Expires</span><span className="text-stone-900 font-medium">{formatDate(post.expiresAt)}</span></div>}
-                            <div><span className="text-stone-400 block mb-0.5">Status</span><span className={`font-medium ${post.status === 'active' ? 'text-green-600' : 'text-stone-600'}`}>{post.status === 'active' ? 'Active' : post.status}</span></div>
+                            <div><span className="text-stone-400 block mb-0.5">Status</span><span className={`font-medium ${post.status === 'active' ? 'text-green-600' : post.status === 'resolved' ? 'text-blue-600' : 'text-stone-600'}`}>{post.status === 'active' ? 'Active' : post.status === 'resolved' ? 'Resolved' : post.status}</span></div>
                         </div>
                     </div>
 
                     {/* Right: Sidebar */}
                     <aside className="w-80 flex-shrink-0 hidden lg:block">
                         <div className="sticky top-20">
+                            {/* Mark as Complete - for post creator or admin */}
+                            {canMarkComplete && (
+                                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-5 mb-4">
+                                    <h3 className="text-sm font-semibold text-green-800 mb-2">Is your request fulfilled?</h3>
+                                    <p className="text-xs text-green-600 mb-3">Mark as complete to let others know.</p>
+                                    <button 
+                                        onClick={handleMarkComplete}
+                                        disabled={markingComplete}
+                                        className="w-full py-2.5 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                                    >
+                                        {markingComplete ? (
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                        ) : (
+                                            <>
+                                                <CheckCircle2 className="w-4 h-4" />
+                                                Mark as Completed
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
+
                             {/* Contact Card */}
                             {post.contact && (
                                 <div className="bg-stone-50 rounded-2xl p-6 mb-4">
@@ -211,10 +270,20 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 {post.contact && (
                     <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-stone-200">
                         <div className="flex gap-3">
-                            <button onClick={() => setShowContact(true)}
-                                className="flex-1 py-3.5 bg-teal-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
-                                <Phone className="w-5 h-5" /> Contact
-                            </button>
+                            {canMarkComplete ? (
+                                <button 
+                                    onClick={handleMarkComplete}
+                                    disabled={markingComplete}
+                                    className="flex-1 py-3.5 bg-green-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2 disabled:opacity-50"
+                                >
+                                    {markingComplete ? <Loader2 className="w-5 h-5 animate-spin" /> : <><CheckCircle2 className="w-5 h-5" /> Done</>}
+                                </button>
+                            ) : (
+                                <button onClick={() => setShowContact(true)}
+                                    className="flex-1 py-3.5 bg-teal-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
+                                    <Phone className="w-5 h-5" /> Contact
+                                </button>
+                            )}
                             <button onClick={() => setShowContactHelper(true)}
                                 className="flex-1 py-3.5 bg-amber-500 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
                                 <MessageCircle className="w-5 h-5" /> Help
