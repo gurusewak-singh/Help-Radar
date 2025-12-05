@@ -69,12 +69,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.user) {
                 const authenticatedUser: User = {
                     id: data.user.id,
                     email: data.user.email,
-                    name: data.user.name
+                    name: data.user.name,
+                    isAdmin: checkIsAdmin(data.user.email)
                 };
                 setUser(authenticatedUser);
                 localStorage.setItem('helpradar_user', JSON.stringify(authenticatedUser));
@@ -85,20 +86,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             console.error('Login error:', error);
             return false;
         }
-        // Mock login - in production, this would call an API
-        if (email && password) {
-            const isAdmin = checkIsAdmin(email);
-            const mockUser: User = {
-                id: 'user_' + Date.now(),
-                email,
-                name: email.split('@')[0],
-                isAdmin
-            };
-            setUser(mockUser);
-            localStorage.setItem('helpradar_user', JSON.stringify(mockUser));
-            return true;
-        }
-        return false;
     };
 
     const register = async (email: string, password: string, name: string): Promise<boolean> => {
@@ -116,12 +103,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.user) {
                 const registeredUser: User = {
                     id: data.user.id,
                     email: data.user.email,
-                    name: data.user.name
+                    name: data.user.name,
+                    isAdmin: checkIsAdmin(data.user.email)
                 };
                 setUser(registeredUser);
                 localStorage.setItem('helpradar_user', JSON.stringify(registeredUser));
@@ -132,20 +120,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             console.error('Registration error:', error);
             return false;
         }
-        // Mock registration - in production, this would call an API
-        if (email && password && name) {
-            const isAdmin = checkIsAdmin(email);
-            const mockUser: User = {
-                id: 'user_' + Date.now(),
-                email,
-                name,
-                isAdmin
-            };
-            setUser(mockUser);
-            localStorage.setItem('helpradar_user', JSON.stringify(mockUser));
-            return true;
-        }
-        return false;
     };
 
     const logout = () => {
