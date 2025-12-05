@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 // Admin seeder configuration
 const ADMIN_USERS = [
@@ -45,13 +46,16 @@ async function seedAdmins() {
         console.log('🌱 Seeding admin users...\n');
 
         for (const admin of ADMIN_USERS) {
+            // Hash the password using bcrypt (same as register API)
+            const hashedPassword = await bcrypt.hash(admin.password, 12);
+
             const result = await collection.updateOne(
                 { email: admin.email },
                 {
                     $set: {
                         name: admin.name,
                         email: admin.email,
-                        password: admin.password,
+                        password: hashedPassword,
                         role: admin.role,
                         trustScore: admin.trustScore,
                         notificationPreferences: {
