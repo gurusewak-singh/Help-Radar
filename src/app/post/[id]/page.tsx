@@ -2,8 +2,9 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, MapPin, Clock, Eye, Phone, User, Flag, Share2, CheckCircle, Loader2, Heart, HelpCircle, Search, Gift } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Eye, Phone, User, Flag, Share2, CheckCircle, Loader2, Heart, HelpCircle, Search, Gift, MessageCircle } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
+import ContactHelperModal from '@/components/ContactHelperModal';
 
 interface Post {
     _id: string;
@@ -69,6 +70,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
     const [showContact, setShowContact] = useState(false);
+    const [showContactHelper, setShowContactHelper] = useState(false);
     const [copied, setCopied] = useState(false);
     const [reported, setReported] = useState(false);
 
@@ -181,6 +183,10 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                                         className="w-full py-3 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
                                         <Phone className="w-5 h-5" /> View Contact
                                     </button>
+                                    <button onClick={() => setShowContactHelper(true)}
+                                        className="w-full py-3 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors flex items-center justify-center gap-2 mt-3">
+                                        <MessageCircle className="w-5 h-5" /> Contact
+                                    </button>
                                 </div>
                             )}
 
@@ -204,15 +210,22 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 {/* Mobile Contact */}
                 {post.contact && (
                     <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-stone-200">
-                        <button onClick={() => setShowContact(true)}
-                            className="w-full py-3.5 bg-teal-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
-                            <Phone className="w-5 h-5" /> View Contact Details
-                        </button>
+                        <div className="flex gap-3">
+                            <button onClick={() => setShowContact(true)}
+                                className="flex-1 py-3.5 bg-teal-600 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
+                                <Phone className="w-5 h-5" /> Contact
+                            </button>
+                            <button onClick={() => setShowContactHelper(true)}
+                                className="flex-1 py-3.5 bg-amber-500 text-white font-semibold rounded-xl flex items-center justify-center gap-2">
+                                <MessageCircle className="w-5 h-5" /> Help
+                            </button>
+                        </div>
                     </div>
                 )}
             </main>
 
             {post.contact && <ContactModal isOpen={showContact} onClose={() => setShowContact(false)} contact={post.contact} postTitle={post.title} />}
+            <ContactHelperModal isOpen={showContactHelper} onClose={() => setShowContactHelper(false)} postId={post._id} postTitle={post.title} />
         </div>
     );
 }
