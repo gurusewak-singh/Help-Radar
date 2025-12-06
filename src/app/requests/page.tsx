@@ -6,6 +6,7 @@ import Link from 'next/link';
 import PostCard from '@/components/PostCard';
 import FiltersBar, { Filters } from '@/components/FiltersBar';
 import Pagination from '@/components/Pagination';
+import { PostCardSkeleton } from '@/components/Skeletons';
 import { useAuth } from '@/contexts/AuthContext';
 import { Heart, HelpCircle, Search, Gift, Plus, ChevronRight, Users, Shield, Zap, ArrowLeft } from 'lucide-react';
 
@@ -180,9 +181,10 @@ function RequestsContent() {
 
                         {/* Posts List */}
                         {loading ? (
-                            <div className="py-20 text-center">
-                                <div className="w-10 h-10 border-3 border-stone-200 border-t-teal-600 rounded-full animate-spin mx-auto"></div>
-                                <p className="text-sm text-stone-500 mt-4">Loading requests...</p>
+                            <div className="space-y-4">
+                                {Array.from({ length: 4 }).map((_, i) => (
+                                    <PostCardSkeleton key={i} />
+                                ))}
                             </div>
                         ) : posts.length === 0 ? (
                             <div className="py-20 text-center bg-white rounded-2xl border border-stone-200">

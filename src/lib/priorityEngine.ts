@@ -156,26 +156,29 @@ export function analyzePriority(title: string, description: string): PrioritySug
     });
 
     // Determine category
-    let suggestedCategory: 'Help Needed' | 'Item Lost' | 'Blood Needed' | 'Offer' = 'Help Needed';
+    type CategoryType = 'Help Needed' | 'Item Lost' | 'Blood Needed' | 'Offer';
+    let suggestedCategory: CategoryType = 'Help Needed';
     let maxScore = 0;
 
-    Object.entries(categoryScores).forEach(([category, score]) => {
+    const entries = Object.entries(categoryScores) as [CategoryType, number][];
+    for (const [category, score] of entries) {
         if (score > maxScore) {
             maxScore = score;
-            suggestedCategory = category as typeof suggestedCategory;
+            suggestedCategory = category;
         }
-    });
-
-    if (maxScore > 0) {
-        reasons.push(`Category "${suggestedCategory}" detected based on keywords`);
-    } else {
-        reasons.push('Defaulting to "Help Needed" category');
     }
 
-    // Blood Needed posts are automatically high urgency
-    if (suggestedCategory === 'Blood Needed' && suggestedUrgency !== 'High') {
+    // Blood Needed posts are automatically high urgency - check before logging
+    const finalCategory: CategoryType = suggestedCategory;
+    if (finalCategory === 'Blood Needed' && suggestedUrgency !== 'High') {
         suggestedUrgency = 'High';
         reasons.push('Blood donation requests are automatically marked high urgency');
+    }
+
+    if (maxScore > 0) {
+        reasons.push(`Category "${finalCategory}" detected based on keywords`);
+    } else {
+        reasons.push('Defaulting to "Help Needed" category');
     }
 
     // Calculate confidence score
@@ -183,7 +186,7 @@ export function analyzePriority(title: string, description: string): PrioritySug
     const confidenceScore = Math.min(100, totalKeywordsFound * 15 + (maxScore > 0 ? 30 : 0));
 
     return {
-        suggestedCategory,
+        suggestedCategory: finalCategory,
         suggestedUrgency,
         confidenceScore,
         detectedKeywords: [...new Set(detectedKeywords)], // Remove duplicates
