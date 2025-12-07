@@ -114,10 +114,10 @@ function RequestsContent() {
     const handleFilterChange = (newFilters: Filters) => { setFilters(newFilters); setCurrentPage(1); };
 
     return (
-        <div className="min-h-screen bg-stone-50 pt-4">
+        <div className="min-h-screen bg-stone-50 pt-2 sm:pt-4">
             {/* Header */}
             <div className="bg-white border-b border-stone-200">
-                <div className="max-w-6xl mx-auto px-6 py-6">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
                     {showMine && (
                         <Link
                             href="/profile"
@@ -127,24 +127,25 @@ function RequestsContent() {
                             Back to Profile
                         </Link>
                     )}
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-2xl font-bold text-stone-900">
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="min-w-0">
+                            <h1 className="text-xl sm:text-2xl font-bold text-stone-900 truncate">
                                 {showMine ? 'My Requests' : 'All Requests'}
                             </h1>
                             <p className="text-stone-500 mt-1">{loading ? 'Loading...' : `${posts.length} results found`}</p>
                         </div>
                         <Link
                             href="/create"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition-colors"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-teal-600 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-teal-700 transition-colors flex-shrink-0"
                         >
                             <Plus className="w-4 h-4" />
-                            Post Request
+                            <span className="hidden sm:inline">Post Request</span>
+                            <span className="sm:hidden">Post</span>
                         </Link>
                     </div>
 
                     {/* Category Tabs */}
-                    <div className="flex gap-2 mt-6 overflow-x-auto pb-2">
+                    <div className="flex gap-2 mt-4 sm:mt-6 overflow-x-auto pb-2 -mx-4 sm:mx-0 px-4 sm:px-0 scrollbar-none">
                         <button
                             onClick={() => handleFilterChange({ ...filters, category: '' })}
                             className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${!filters.category
@@ -172,7 +173,7 @@ function RequestsContent() {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-6xl mx-auto px-6 py-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
                 <div className="lg:flex lg:gap-8">
                     {/* Posts Section */}
                     <main className="flex-1 min-w-0">

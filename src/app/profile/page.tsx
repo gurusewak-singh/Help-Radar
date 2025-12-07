@@ -40,14 +40,14 @@ export default function ProfilePage() {
 
     return (
         <div className="min-h-screen bg-teal-600">
-            <div className="w-full px-12 py-12">
-                <div className="flex flex-col lg:flex-row gap-20 items-center">
+            <div className="w-full px-4 sm:px-8 lg:px-12 py-6 sm:py-12">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-20 items-center">
 
                     {/* Profile Card */}
                     <div className="w-full lg:w-[55%] bg-white rounded-xl shadow-lg">
                         {/* User Info */}
-                        <div className="p-8 text-center border-b border-stone-100">
-                            <div className="w-20 h-20 rounded-full bg-teal-600 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
+                        <div className="p-6 sm:p-8 text-center border-b border-stone-100">
+                            <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-teal-600 flex items-center justify-center text-white text-xl sm:text-2xl font-bold mx-auto mb-3 sm:mb-4">
                                 {user.name.charAt(0).toUpperCase()}
                             </div>
                             <h1 className="font-semibold text-stone-900">{user.name}</h1>
@@ -115,10 +115,10 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Right Side */}
-                    <div className="flex-1 text-center lg:text-left">
+                    {/* Right Side - Hidden on mobile */}
+                    <div className="hidden lg:block flex-1 text-center lg:text-left">
                         {animationData && (
-                            <div className="w-96 h-96 mx-auto lg:mx-0">
+                            <div className="w-72 lg:w-96 h-72 lg:h-96 mx-auto lg:mx-0">
                                 <Lottie animationData={animationData} loop={true} />
                             </div>
                         )}

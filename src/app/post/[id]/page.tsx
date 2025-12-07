@@ -129,9 +129,9 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
         <div className="min-h-screen bg-white">
             {/* Header */}
             <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-stone-100">
-                <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-                    <Link href="/requests" className="flex items-center gap-2 text-stone-500 hover:text-stone-900 text-sm">
-                        <ArrowLeft className="w-4 h-4" /> Back to requests
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 h-12 sm:h-14 flex items-center justify-between">
+                    <Link href="/requests" className="flex items-center gap-1.5 sm:gap-2 text-stone-500 hover:text-stone-900 text-sm">
+                        <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back to requests</span><span className="sm:hidden">Back</span>
                     </Link>
                     <div className="flex gap-1">
                         <button onClick={share} className="p-2 rounded-lg hover:bg-stone-100 text-stone-400 hover:text-stone-600">
@@ -144,8 +144,8 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                 </div>
             </header>
 
-            <main className="max-w-6xl mx-auto px-6 py-8">
-                <div className="flex gap-10">
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8 pb-24 sm:pb-8">
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
                     {/* Left: Main Content */}
                     <div className="flex-1 min-w-0">
                         {/* Resolved Banner */}
@@ -172,7 +172,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-3xl font-bold text-stone-900 leading-tight mb-4">{post.title}</h1>
+                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-stone-900 leading-tight mb-4">{post.title}</h1>
 
                         {/* Meta */}
                         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-stone-500 mb-6 pb-6 border-b border-stone-100">
@@ -194,7 +194,7 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
                         </div>
 
                         {/* Details */}
-                        <div className="flex gap-6 text-sm pb-6 border-b border-stone-100">
+                        <div className="flex flex-wrap gap-4 sm:gap-6 text-sm pb-6 border-b border-stone-100">
                             <div><span className="text-stone-400 block mb-0.5">Posted on</span><span className="text-stone-900 font-medium">{formatDate(post.createdAt)}</span></div>
                             {post.expiresAt && <div><span className="text-stone-400 block mb-0.5">Expires</span><span className="text-stone-900 font-medium">{formatDate(post.expiresAt)}</span></div>}
                             <div><span className="text-stone-400 block mb-0.5">Status</span><span className={`font-medium ${post.status === 'active' ? 'text-green-600' : post.status === 'resolved' ? 'text-blue-600' : 'text-stone-600'}`}>{post.status === 'active' ? 'Active' : post.status === 'resolved' ? 'Resolved' : post.status}</span></div>

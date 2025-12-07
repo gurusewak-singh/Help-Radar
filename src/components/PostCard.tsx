@@ -44,10 +44,10 @@ export default function PostCard({ post }: PostCardProps) {
     return (
         <article className={`group bg-white rounded-lg border overflow-hidden transition-all duration-200 hover:shadow-md ${isUrgent ? 'border-red-300 ring-1 ring-red-100' : 'border-stone-200 hover:border-stone-300'
             }`}>
-            <div className="flex">
-                {/* Image - compact on desktop */}
+            <div className="flex flex-col sm:flex-row">
+                {/* Image - full width on mobile, compact on desktop */}
                 {hasImage && (
-                    <div className="relative w-32 lg:w-40 flex-shrink-0 overflow-hidden bg-stone-100">
+                    <div className="relative w-full sm:w-32 lg:w-40 h-40 sm:h-auto flex-shrink-0 overflow-hidden bg-stone-100">
                         <img
                             src={post.images![0].url}
                             alt=""
@@ -65,7 +65,7 @@ export default function PostCard({ post }: PostCardProps) {
                 )}
 
                 {/* Content - tighter padding */}
-                <div className="flex-1 p-4 flex flex-col min-w-0">
+                <div className="flex-1 p-3 sm:p-4 flex flex-col min-w-0">
                     {/* Top row: badges + urgent indicator */}
                     <div className="flex items-center gap-2 mb-2">
                         <CategoryBadge category={post.category} />
@@ -85,22 +85,22 @@ export default function PostCard({ post }: PostCardProps) {
                         )}
                     </div>
 
-                    {/* Title - single line on desktop */}
-                    <h2 className={`font-semibold leading-snug mb-1 truncate ${isUrgent ? 'text-red-900' : 'text-stone-900 group-hover:text-teal-700'
+                    {/* Title - can wrap on mobile */}
+                    <h2 className={`font-semibold leading-snug mb-1 line-clamp-2 sm:truncate ${isUrgent ? 'text-red-900' : 'text-stone-900 group-hover:text-teal-700'
                         }`}>
                         <Link href={`/post/${post._id}`}>
                             {post.title}
                         </Link>
                     </h2>
 
-                    {/* Description - 1 line */}
-                    <p className="text-sm text-stone-500 truncate mb-2">
+                    {/* Description - 2 lines on mobile, 1 on desktop */}
+                    <p className="text-sm text-stone-500 line-clamp-2 sm:truncate mb-2">
                         {post.description}
                     </p>
 
-                    {/* Footer - inline */}
-                    <div className="flex items-center justify-between mt-auto">
-                        <div className="flex items-center gap-3 text-xs text-stone-400">
+                    {/* Footer - wrap on mobile */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 mt-auto">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-stone-400">
                             <span className="flex items-center gap-1">
                                 <MapPin className="w-3 h-3" />
                                 {post.city}
