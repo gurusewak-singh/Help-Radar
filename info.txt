@@ -1,0 +1,426 @@
+================================================================================
+                         HELPRADAR - PROJECT INFORMATION
+                     For Presentation/PPT Creation Reference
+================================================================================
+
+================================================================================
+                              PROJECT OVERVIEW
+================================================================================
+
+PROJECT NAME: HelpRadar
+TAGLINE: Hyperlocal Community Help Platform
+TYPE: Full-Stack Web Application
+PURPOSE: A platform connecting communities for emergency help, lost items, 
+         blood donation, and volunteer assistance.
+
+PROBLEM STATEMENT:
+- Communities lack a centralized platform for local emergency help
+- During emergencies, finding helpers in your area is difficult
+- Blood donation requests often don't reach the right people in time
+- Lost items rarely get reunited with owners due to limited reach
+
+SOLUTION:
+HelpRadar provides a hyperlocal platform where:
+- Users can post help requests visible to their local community
+- Urgent requests are prioritized and highlighted
+- Location-based filtering helps find nearby people
+- Real-time notifications ensure timely responses
+
+================================================================================
+                              TECHNOLOGY STACK
+================================================================================
+
+FRONTEND:
+---------
+• Next.js 16 (React Framework with App Router)
+• React 19 (Latest version with Server Components)
+• TypeScript 5 (Type-safe JavaScript)
+• Tailwind CSS 4 (Utility-first CSS framework)
+• Lucide React (Icon library)
+• Lottie React (Animated illustrations)
+• React-Leaflet (Interactive maps)
+• Recharts (Data visualization)
+
+BACKEND:
+--------
+• Next.js API Routes (Serverless functions)
+• MongoDB 8.0 (NoSQL Database)
+• Mongoose ODM (MongoDB object modeling)
+• NextAuth.js v5 (Authentication library)
+• Nodemailer (Email sending)
+• Cloudinary (Image storage and CDN)
+• bcryptjs (Password hashing)
+• DOMPurify (XSS protection)
+
+DEVELOPMENT TOOLS:
+------------------
+• ESLint (Code linting)
+• TypeScript (Static type checking)
+• Git & GitHub (Version control)
+• VS Code (Development environment)
+
+================================================================================
+                              KEY FEATURES
+================================================================================
+
+1. POST CREATION SYSTEM
+   ---------------------
+   • Multi-step form wizard (3 steps: Details → Location → Contact)
+   • Image upload with Cloudinary integration
+   • Category selection: Help Needed, Item Lost, Blood Needed, Offer
+   • Urgency levels: Low, Medium, High
+   • Auto-expiry after 7 days (MongoDB TTL)
+
+2. SMART PRIORITY ENGINE
+   ----------------------
+   • AI-like keyword analysis without Machine Learning
+   • Auto-suggests category based on content
+   • Auto-suggests urgency based on keywords
+   • Examples: "blood" → Blood Needed, "urgent" → High priority
+
+3. AUTHENTICATION SYSTEM
+   ----------------------
+   • Email/Password registration and login
+   • Google OAuth integration (One-click sign-in)
+   • Forgot password with OTP verification
+   • 6-digit OTP sent via email
+   • 10-minute OTP expiry for security
+
+4. NOTIFICATION SYSTEM
+   --------------------
+   • In-app notification bell with unread count
+   • Email notifications for urgent posts
+   • Help offer notifications to post creators
+   • Mark individual/all notifications as read
+   • Auto-delete after 30 days (MongoDB TTL)
+
+5. CONTACT HELPER FEATURE
+   -----------------------
+   • Helpers can send messages to post creators
+   • Includes helper's name, email, phone, message
+   • Email sent to post creator with reply-to header
+   • In-app notification created simultaneously
+
+6. POST MANAGEMENT
+   ----------------
+   • Mark as Resolved (for post creators)
+   • Report inappropriate posts
+   • Auto-hide after 5 reports
+   • Admin can resolve/delete any post
+
+7. SEARCH & FILTERS
+   -----------------
+   • Text search across title and description
+   • Filter by city, category, urgency
+   • Sort by: Most Recent, Highest Priority
+   • Custom styled dropdown components
+   • Active filter tags with individual remove
+
+8. MAP VIEW
+   ---------
+   • Leaflet + OpenStreetMap integration
+   • Visual markers for each post
+   • Click markers to view post details
+   • Location-based sorting (nearest first)
+
+9. ADMIN DASHBOARD
+   ----------------
+   • Statistics overview (posts, categories, cities)
+   • Manage all posts (resolve, delete)
+   • View reported content
+   • Role-based access control
+
+10. RESPONSIVE DESIGN
+    ------------------
+    • Mobile-first approach
+    • Desktop and tablet optimized
+    • Bottom navigation bar on mobile
+    • Sticky headers and sidebars
+
+================================================================================
+                              DATABASE DESIGN
+================================================================================
+
+COLLECTIONS:
+------------
+
+1. USERS
+   - name, email, password (hashed)
+   - googleId (for OAuth users)
+   - role (user/admin)
+   - trustScore (0-100)
+   - resetOtp, resetOtpExpiry (password reset)
+   - notificationPreferences
+
+2. POSTS
+   - title, description
+   - category (enum: 4 types)
+   - city, area
+   - location (GeoJSON Point)
+   - contact (name, phone, email)
+   - urgency (enum: Low/Medium/High)
+   - images (Cloudinary URLs)
+   - status (active/resolved/removed)
+   - views, reported, priority
+   - createdBy (User reference)
+   - expiresAt (TTL index)
+
+3. NOTIFICATIONS
+   - recipientEmail
+   - type (help_offered, new_post, etc.)
+   - title, message
+   - postId, postTitle
+   - senderName, senderEmail
+   - isRead (boolean)
+   - createdAt (TTL index - 30 days)
+
+4. REPORTS
+   - postId (Post reference)
+   - reason (enum: spam, inappropriate, etc.)
+   - description
+   - reportedBy (User reference)
+   - status (pending/reviewed/dismissed)
+
+INDEXES:
+--------
+• 2dsphere on location (geospatial queries)
+• Text index on title + description (full-text search)
+• Compound index on city + category + urgency
+• TTL index on expiresAt (auto-cleanup)
+• Email indexes for fast lookups
+
+================================================================================
+                              API ARCHITECTURE
+================================================================================
+
+REST API ENDPOINTS:
+-------------------
+
+POSTS:
+  GET    /api/posts              - List posts (filters, search, pagination)
+  POST   /api/posts              - Create new post
+  GET    /api/posts/[id]         - Get post detail
+  PATCH  /api/posts/[id]         - Update post
+  DELETE /api/posts/[id]         - Delete post
+  POST   /api/posts/[id]/contact - Contact post creator
+  POST   /api/posts/[id]/report  - Report post
+
+AUTHENTICATION:
+  POST   /api/auth/register        - User registration
+  POST   /api/auth/login           - Email/password login
+  POST   /api/auth/forgot-password - Send OTP
+  POST   /api/auth/verify-otp      - Verify OTP
+  POST   /api/auth/reset-password  - Reset password
+  *      /api/auth/[...nextauth]   - NextAuth handlers
+
+NOTIFICATIONS:
+  GET    /api/notifications           - Get notifications
+  PATCH  /api/notifications/[id]      - Mark as read
+  POST   /api/notifications/mark-all-read - Mark all read
+
+OTHER:
+  GET    /api/stats     - Aggregation statistics
+  POST   /api/suggest   - Smart suggestions
+
+================================================================================
+                              SECURITY MEASURES
+================================================================================
+
+1. PASSWORD SECURITY
+   • bcryptjs hashing with salt rounds
+   • Password field excluded from queries by default
+   • Minimum 6 character requirement
+
+2. INPUT VALIDATION
+   • Server-side validation on all endpoints
+   • DOMPurify sanitization (XSS prevention)
+   • Max length limits on all text fields
+
+3. RATE LIMITING
+   • 5 posts per minute per IP
+   • 3 reports per minute per IP
+   • Prevents spam and abuse
+
+4. AUTHENTICATION
+   • JWT-based sessions (NextAuth.js)
+   • Secure HTTP-only cookies
+   • CSRF protection built-in
+
+5. DATA PROTECTION
+   • Environment variables for secrets
+   • Masked contact information
+   • OTP expires in 10 minutes
+
+6. ACCESS CONTROL
+   • Role-based permissions (user/admin)
+   • Post creators can only edit their own posts
+   • Admins have full access
+
+================================================================================
+                              USER FLOWS
+================================================================================
+
+1. REGISTRATION FLOW
+   User visits → Clicks Sign Up → Fills form → Creates account → Redirected
+   Alternative: Click "Sign in with Google" → OAuth flow → Account created
+
+2. LOGIN FLOW
+   User visits → Enters email/password → Validated → Session created
+   Alternative: Google OAuth → Verify identity → Session created
+
+3. FORGOT PASSWORD FLOW
+   Click "Forgot Password" → Enter email → Receive OTP → 
+   Enter OTP → Verified → Enter new password → Password updated
+
+4. CREATE POST FLOW
+   Login required → Click "Post Request" → Step 1: Details → 
+   Step 2: Location & Images → Step 3: Contact → Submit → Post created
+
+5. CONTACT HELPER FLOW
+   View post → Click "Contact" → Fill form (name, email, message) → 
+   Submit → Email sent to creator → Notification created
+
+6. MARK RESOLVED FLOW
+   Post creator views their post → Clicks "Mark as Completed" → 
+   Status updated to resolved → Button hidden
+
+================================================================================
+                              PROJECT SCREENSHOTS
+                    (Reference for PPT - capture these screens)
+================================================================================
+
+SUGGESTED SCREENSHOTS:
+1. Home Page (Landing)
+2. Requests Feed Page with Filters
+3. Filter Dropdown Open
+4. Post Detail Page
+5. Create Post Form (all 3 steps)
+6. Contact Helper Modal
+7. Login Page with Google Button
+8. Register Page
+9. Forgot Password (3-step flow)
+10. User Profile Page
+11. Notifications Dropdown
+12. Notifications Page
+13. Admin Dashboard
+14. Map View with Markers
+15. Mobile Responsive Views
+
+================================================================================
+                              UNIQUE SELLING POINTS
+================================================================================
+
+1. HYPERLOCAL FOCUS
+   - Not just city-level, but area/neighborhood level
+   - GPS-based sorting for nearest posts
+
+2. SMART AUTOMATION
+   - Auto-categorization without AI/ML overhead
+   - Auto-priority calculation
+   - Auto-expiry for stale posts
+
+3. PRIVACY-FIRST DESIGN
+   - Contact details hidden by default
+   - Helper messaging without revealing personal info
+   - Anonymous posting option
+
+4. REAL-TIME ENGAGEMENT
+   - Instant notifications
+   - Email alerts for urgent posts
+   - Live notification bell
+
+5. COMMUNITY MODERATION
+   - Self-governing through reports
+   - Trust scores for users
+   - Auto-hide problematic content
+
+6. MODERN UI/UX
+   - Clean, minimal design
+   - Smooth animations (Lottie)
+   - Custom styled components
+   - Mobile-responsive
+
+================================================================================
+                              FUTURE ENHANCEMENTS
+================================================================================
+
+1. Push Notifications (PWA)
+2. Chat/Messaging System
+3. Verified Organizations/NGOs
+4. Multi-language Support
+5. Voice Input for Posts
+6. AI-powered Image Recognition
+7. Integration with Emergency Services
+8. Mobile Apps (React Native)
+
+================================================================================
+                              TEAM CONTRIBUTIONS
+================================================================================
+
+GURUSEWAK SINGH:
+- Google OAuth Integration
+- Forgot Password Functionality
+- Contact Helper Email System
+- Filter Bar Styling
+- Mark as Resolved Feature
+- Core API Development
+
+SUAR:
+- Profile Page My Requests
+- Footer Links
+- Notifications System
+- UI/UX Improvements
+
+================================================================================
+                              VIVA TALKING POINTS
+================================================================================
+
+Q: Why MongoDB?
+A: Posts are independent documents with variable fields (images, coordinates). 
+   MongoDB's flexible schema and native geo-queries make it ideal. Also supports
+   TTL indexes for auto-expiry.
+
+Q: Why Next.js?
+A: Combines React UI with API routes in one framework. Fast SSR, great developer
+   experience, easy Vercel deployment. App Router provides modern React patterns.
+
+Q: How does authentication work?
+A: NextAuth.js v5 handles both OAuth (Google) and credentials. JWT-based sessions
+   stored in HTTP-only cookies. Password hashed with bcryptjs.
+
+Q: How is data privacy handled?
+A: Contact details masked by default. Helper messaging goes through our system.
+   Passwords hashed. OTPs expire in 10 minutes.
+
+Q: What makes the priority engine "smart"?
+A: Keyword analysis on title and description. Matches against predefined
+   dictionaries for categories and urgency. No ML needed - rule-based and fast.
+
+Q: How does the notification system work?
+A: Dual system - in-app (bell icon) and email. Stored in MongoDB with TTL.
+   Context provider for real-time updates. Mark read individually or all at once.
+
+Q: How would you scale this?
+A: MongoDB Atlas sharding for high load. Redis for caching frequent queries.
+   CDN for static assets. Vercel edge functions for API routes.
+
+================================================================================
+                              CONCLUSION
+================================================================================
+
+HelpRadar is a comprehensive full-stack web application that demonstrates:
+
+• Modern React development with Next.js 16
+• NoSQL database design with MongoDB
+• Secure authentication with NextAuth.js
+• Real-time features with notifications
+• Responsive, accessible UI design
+• Production-ready deployment practices
+
+The project solves a real-world problem of community emergency response and
+showcases skills in full-stack development, API design, database modeling,
+and user experience design.
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

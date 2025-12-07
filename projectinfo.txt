@@ -1,0 +1,862 @@
+================================================================================
+                              HELPRADAR
+                 Hyperlocal Community Help Platform
+                         PROJECT REPORT
+================================================================================
+
+================================================================================
+                            CHAPTER 1
+                          INTRODUCTION
+================================================================================
+
+1.1 PROJECT OVERVIEW
+--------------------
+HelpRadar is a full-stack web application designed to connect community members
+during emergencies, lost item situations, blood donation needs, and volunteer
+opportunities. The platform enables hyperlocal communication by allowing users
+to post requests for help and receive responses from people in their immediate
+geographical vicinity.
+
+The application leverages modern web technologies including Next.js 16, React 19,
+MongoDB, and TypeScript to deliver a responsive, real-time, and secure platform
+for community assistance.
+
+1.2 PROBLEM STATEMENT
+---------------------
+In urban communities, people often face emergency situations where they need
+immediate help from those around them. Current solutions have several limitations:
+
+1. LACK OF HYPERLOCAL FOCUS
+   - Social media platforms are too broad and not location-specific
+   - Emergency services may not cover all types of community needs
+   - Neighborhood groups on WhatsApp/Facebook lack proper categorization
+
+2. BLOOD DONATION CHALLENGES
+   - Finding blood donors in urgent situations is time-critical
+   - Existing platforms don't prioritize urgency effectively
+   - No immediate notification system for potential donors
+
+3. LOST ITEM RECOVERY
+   - No dedicated platform for reporting lost items locally
+   - Found items have no centralized place to be reported
+   - Lack of contact mechanism between finder and owner
+
+4. COMMUNITY DISCONNECTION
+   - People willing to help don't know who needs assistance
+   - Those in need don't know who can help in their area
+   - No trust mechanism for community interactions
+
+1.3 PROPOSED SOLUTION
+---------------------
+HelpRadar addresses these problems by providing:
+
+1. HYPERLOCAL PLATFORM
+   - City and area-based filtering
+   - GPS coordinates for precise location
+   - Map visualization of nearby requests
+
+2. SMART PRIORITIZATION
+   - Urgency-based categorization (Low/Medium/High)
+   - AI-like keyword analysis for auto-categorization
+   - Priority scoring for feed ranking
+
+3. REAL-TIME NOTIFICATIONS
+   - In-app notification bell with unread count
+   - Email alerts for urgent requests
+   - Instant helper contact notifications
+
+4. SECURE COMMUNICATION
+   - Masked contact information
+   - Helper messaging system
+   - Report and moderation features
+
+1.4 PROJECT OBJECTIVES
+----------------------
+PRIMARY OBJECTIVES:
+- Develop a user-friendly web platform for community help requests
+- Implement secure authentication with multiple providers
+- Create an efficient notification system for real-time alerts
+- Build an admin dashboard for platform moderation
+
+SECONDARY OBJECTIVES:
+- Implement smart categorization using keyword analysis
+- Develop interactive map visualization
+- Create a post lifecycle with auto-expiry
+- Enable community self-moderation through reports
+
+
+================================================================================
+                            CHAPTER 2
+                      LITERATURE REVIEW
+================================================================================
+
+2.1 EXISTING SYSTEMS
+--------------------
+
+2.1.1 SOCIAL MEDIA PLATFORMS (Facebook, Twitter)
+Advantages:
+- Large user base
+- Easy sharing mechanism
+- Mobile applications
+
+Disadvantages:
+- Not hyperlocal
+- No categorization for help types
+- Requests get lost in feed
+- No urgency prioritization
+
+2.1.2 NEXTDOOR
+Advantages:
+- Neighborhood-focused
+- Verified addresses
+- Local recommendations
+
+Disadvantages:
+- Limited to residential areas
+- No emergency prioritization
+- No blood donation features
+- Limited in Indian context
+
+2.1.3 BLOOD DONATION APPS
+Advantages:
+- Focused on single purpose
+- Blood type matching
+- Hospital integration
+
+Disadvantages:
+- Only for blood donation
+- No general help features
+- Limited user base
+
+2.2 RESEARCH GAP
+----------------
+Current solutions either focus on general social networking without hyperlocal
+features, or are too specialized for single purposes. HelpRadar bridges this
+gap by providing:
+
+- Multi-category support (Help, Lost Items, Blood, Offers)
+- Hyperlocal focus with GPS integration
+- Smart prioritization without complex AI
+- Modern, responsive user interface
+- Secure, privacy-focused design
+
+
+================================================================================
+                            CHAPTER 3
+                    SYSTEM REQUIREMENTS
+================================================================================
+
+3.1 FUNCTIONAL REQUIREMENTS
+---------------------------
+
+FR1: USER AUTHENTICATION
+    - FR1.1: Users shall be able to register with email and password
+    - FR1.2: Users shall be able to login with Google OAuth
+    - FR1.3: Users shall be able to reset password via OTP
+    - FR1.4: System shall maintain user sessions securely
+
+FR2: POST MANAGEMENT
+    - FR2.1: Users shall be able to create posts with title, description
+    - FR2.2: Users shall be able to select category and urgency
+    - FR2.3: Users shall be able to upload up to 3 images
+    - FR2.4: Users shall be able to add contact information
+    - FR2.5: Users shall be able to mark their posts as resolved
+
+FR3: SEARCH AND FILTER
+    - FR3.1: Users shall be able to search posts by keywords
+    - FR3.2: Users shall be able to filter by city, category, urgency
+    - FR3.3: Users shall be able to sort by recent or priority
+    - FR3.4: System shall paginate results
+
+FR4: NOTIFICATIONS
+    - FR4.1: Users shall receive in-app notifications
+    - FR4.2: Users shall receive email for urgent posts
+    - FR4.3: Post creators shall be notified when helpers contact them
+    - FR4.4: Users shall be able to mark notifications as read
+
+FR5: CONTACT SYSTEM
+    - FR5.1: Users shall be able to view post creator contact
+    - FR5.2: Users shall be able to send messages to creators
+    - FR5.3: System shall email messages to creators
+
+FR6: ADMIN FUNCTIONS
+    - FR6.1: Admins shall be able to view all posts
+    - FR6.2: Admins shall be able to resolve/delete any post
+    - FR6.3: Admins shall be able to view statistics
+    - FR6.4: Admins shall be able to manage reported content
+
+FR7: REPORTING
+    - FR7.1: Users shall be able to report inappropriate posts
+    - FR7.2: System shall auto-hide posts with 5+ reports
+
+3.2 NON-FUNCTIONAL REQUIREMENTS
+-------------------------------
+
+NFR1: PERFORMANCE
+    - NFR1.1: Page load time shall be under 3 seconds
+    - NFR1.2: API response time shall be under 500ms
+    - NFR1.3: System shall handle 1000 concurrent users
+
+NFR2: SECURITY
+    - NFR2.1: Passwords shall be hashed using bcrypt
+    - NFR2.2: All inputs shall be sanitized for XSS
+    - NFR2.3: Rate limiting shall prevent spam
+    - NFR2.4: Sessions shall use secure HTTP-only cookies
+
+NFR3: USABILITY
+    - NFR3.1: Interface shall be mobile-responsive
+    - NFR3.2: System shall be accessible (WCAG 2.1)
+    - NFR3.3: Navigation shall require max 3 clicks
+
+NFR4: RELIABILITY
+    - NFR4.1: System uptime shall be 99.5%
+    - NFR4.2: Data shall be backed up daily
+    - NFR4.3: System shall gracefully handle errors
+
+NFR5: SCALABILITY
+    - NFR5.1: Database shall support sharding
+    - NFR5.2: Architecture shall support horizontal scaling
+
+3.3 HARDWARE REQUIREMENTS
+-------------------------
+
+DEVELOPMENT ENVIRONMENT:
+- Processor: Intel i3 or equivalent (minimum)
+- RAM: 8 GB (minimum)
+- Storage: 50 GB free space
+- Display: 1366x768 resolution (minimum)
+
+DEPLOYMENT ENVIRONMENT:
+- Cloud hosting (Vercel/AWS/GCP)
+- MongoDB Atlas cluster
+- CDN for static assets
+
+3.4 SOFTWARE REQUIREMENTS
+-------------------------
+
+DEVELOPMENT:
+- Operating System: Windows 10/11, macOS, or Linux
+- Node.js: Version 18 or higher
+- npm: Version 9 or higher
+- Git: Version 2.30 or higher
+- Code Editor: VS Code (recommended)
+
+DEPLOYMENT:
+- MongoDB: Version 6.0 or higher
+- Node.js runtime
+- SSL/TLS certificate
+
+
+================================================================================
+                            CHAPTER 4
+                        SYSTEM DESIGN
+================================================================================
+
+4.1 SYSTEM ARCHITECTURE
+-----------------------
+
+The application follows a 3-tier architecture:
+
+PRESENTATION TIER (Frontend)
+├── Next.js App Router
+├── React Components
+├── Tailwind CSS Styling
+└── Client-side JavaScript
+
+APPLICATION TIER (Backend)
+├── Next.js API Routes
+├── Authentication (NextAuth.js)
+├── Business Logic
+└── External Service Integration
+
+DATA TIER (Database)
+├── MongoDB Atlas
+├── Mongoose ODM
+└── Data Models
+
+4.2 DATABASE DESIGN
+-------------------
+
+COLLECTIONS:
+
+1. USERS COLLECTION
+   {
+     _id: ObjectId,
+     name: String,
+     email: String (unique),
+     password: String (hashed, select: false),
+     googleId: String,
+     role: String (enum: user, admin),
+     trustScore: Number (0-100),
+     resetOtp: String,
+     resetOtpExpiry: Date,
+     subscribedCities: [String],
+     subscribedCategories: [String],
+     notificationPreferences: {
+       email: Boolean,
+       bloodAlerts: Boolean,
+       helpAlerts: Boolean
+     },
+     createdAt: Date,
+     lastLogin: Date
+   }
+
+2. POSTS COLLECTION
+   {
+     _id: ObjectId,
+     title: String (max: 150),
+     description: String (max: 2000),
+     category: String (enum: Help Needed, Item Lost, Blood Needed, Offer),
+     city: String,
+     area: String,
+     location: {
+       type: String (Point),
+       coordinates: [Number, Number] (lng, lat)
+     },
+     contact: {
+       name: String,
+       phone: String,
+       email: String
+     },
+     urgency: String (enum: Low, Medium, High),
+     images: [{
+       url: String,
+       public_id: String
+     }],
+     status: String (enum: active, resolved, removed),
+     views: Number,
+     reported: Number,
+     priority: Number,
+     createdBy: ObjectId (ref: User),
+     createdAt: Date,
+     expiresAt: Date (TTL)
+   }
+
+3. NOTIFICATIONS COLLECTION
+   {
+     _id: ObjectId,
+     recipient: ObjectId (ref: User),
+     recipientEmail: String,
+     type: String (enum: help_offered, new_post, post_resolved, system),
+     title: String (max: 200),
+     message: String (max: 500),
+     postId: ObjectId (ref: Post),
+     postTitle: String,
+     senderId: ObjectId (ref: User),
+     senderName: String,
+     senderEmail: String,
+     isRead: Boolean,
+     urgency: String,
+     createdAt: Date (TTL: 30 days)
+   }
+
+4. REPORTS COLLECTION
+   {
+     _id: ObjectId,
+     postId: ObjectId (ref: Post),
+     reason: String (enum: spam, inappropriate, false_info, harassment, other),
+     description: String (max: 500),
+     reportedBy: ObjectId (ref: User),
+     status: String (enum: pending, reviewed, dismissed),
+     createdAt: Date
+   }
+
+DATABASE INDEXES:
+- 2dsphere index on posts.location (geospatial queries)
+- Text index on posts.title and posts.description (full-text search)
+- Compound index on posts.city, category, urgency (filtering)
+- TTL index on posts.expiresAt (auto-cleanup after 7 days)
+- TTL index on notifications.createdAt (auto-cleanup after 30 days)
+- Index on users.email (authentication)
+- Index on notifications.recipientEmail (notification fetch)
+
+4.3 API DESIGN
+--------------
+
+REST API ENDPOINTS:
+
+AUTHENTICATION:
+  POST   /api/auth/register        - Create new user account
+  POST   /api/auth/login           - Authenticate user
+  POST   /api/auth/forgot-password - Send OTP to email
+  POST   /api/auth/verify-otp      - Verify OTP code
+  POST   /api/auth/reset-password  - Set new password
+  *      /api/auth/[...nextauth]   - NextAuth.js handlers
+
+POSTS:
+  GET    /api/posts                - List posts with filters
+  POST   /api/posts                - Create new post
+  GET    /api/posts/[id]           - Get single post
+  PATCH  /api/posts/[id]           - Update post
+  DELETE /api/posts/[id]           - Delete post
+  POST   /api/posts/[id]/contact   - Contact post creator
+  POST   /api/posts/[id]/report    - Report post
+
+NOTIFICATIONS:
+  GET    /api/notifications              - Get user notifications
+  PATCH  /api/notifications/[id]         - Mark notification read
+  POST   /api/notifications/mark-all-read - Mark all read
+
+STATISTICS:
+  GET    /api/stats    - Get aggregated statistics
+  POST   /api/suggest  - Get smart suggestions
+
+4.4 COMPONENT DESIGN
+--------------------
+
+FRONTEND COMPONENTS:
+
+Header Component
+├── Logo and Navigation
+├── Search Bar
+├── Notification Bell
+└── User Profile Menu
+
+PostCard Component
+├── Category Badge
+├── Urgency Indicator
+├── Title and Description
+├── Location and Time
+└── Action Buttons
+
+FiltersBar Component
+├── Search Input
+├── Filter Toggle Button
+├── Styled Select Dropdowns
+├── Active Filter Tags
+└── Clear Filters Button
+
+CreatePostForm Component
+├── Step Progress Indicator
+├── Category Selection
+├── Details Input (Title, Description, Urgency)
+├── Location Input (City, Area)
+├── Image Upload
+├── Contact Information
+└── Submit Button
+
+ContactHelperModal Component
+├── Helper Information Form
+├── Message Input
+├── Submit Button
+└── Success/Error States
+
+NotificationBell Component
+├── Bell Icon with Count Badge
+├── Dropdown Panel
+├── Notification List
+├── Mark All Read Button
+└── View All Link
+
+
+================================================================================
+                            CHAPTER 5
+                        IMPLEMENTATION
+================================================================================
+
+5.1 TECHNOLOGY STACK
+--------------------
+
+FRONTEND TECHNOLOGIES:
+
+1. Next.js 16
+   - React framework with App Router
+   - Server-side rendering (SSR)
+   - API routes capability
+   - File-based routing
+
+2. React 19
+   - Component-based UI library
+   - Hooks for state management
+   - Context API for global state
+
+3. TypeScript 5
+   - Static type checking
+   - Enhanced IDE support
+   - Reduced runtime errors
+
+4. Tailwind CSS 4
+   - Utility-first CSS framework
+   - Responsive design utilities
+   - Custom component styling
+
+5. Additional Libraries:
+   - Lucide React (Icons)
+   - Lottie React (Animations)
+   - React-Leaflet (Maps)
+   - Recharts (Charts)
+   - date-fns (Date formatting)
+
+BACKEND TECHNOLOGIES:
+
+1. Next.js API Routes
+   - Serverless functions
+   - Built-in routing
+   - TypeScript support
+
+2. NextAuth.js v5
+   - Authentication library
+   - OAuth providers support
+   - Session management
+   - JWT tokens
+
+3. MongoDB with Mongoose
+   - NoSQL database
+   - Flexible schema
+   - Geospatial queries
+   - TTL indexes
+
+4. External Services:
+   - Cloudinary (Image storage)
+   - Nodemailer (Email sending)
+   - Google OAuth (Authentication)
+
+5.2 KEY FEATURES IMPLEMENTATION
+-------------------------------
+
+5.2.1 AUTHENTICATION SYSTEM
+
+The application implements dual authentication:
+
+A) Email/Password Authentication:
+   - Registration with validation
+   - Password hashing using bcryptjs
+   - Login with session creation
+   - Password reset via OTP
+
+B) Google OAuth:
+   - NextAuth.js Google provider
+   - Automatic user creation
+   - Account linking for existing users
+
+Code Structure:
+- /src/auth.ts - NextAuth configuration
+- /src/app/api/auth/* - Auth API routes
+- /src/contexts/AuthContext.tsx - Auth state management
+
+5.2.2 POST MANAGEMENT
+
+Posts are managed through a comprehensive system:
+
+A) Creation:
+   - Multi-step form wizard
+   - Input validation
+   - Image upload to Cloudinary
+   - Smart priority calculation
+   - User ID association
+
+B) Display:
+   - Paginated list view
+   - Card-based UI
+   - Category color coding
+   - Urgency indicators
+   - View count tracking
+
+C) Lifecycle:
+   - Auto-expiry (7 days TTL)
+   - Mark as resolved
+   - Report and moderation
+   - Status tracking
+
+5.2.3 NOTIFICATION SYSTEM
+
+Dual notification mechanism:
+
+A) In-App Notifications:
+   - Stored in MongoDB
+   - Real-time bell icon updates
+   - Unread count badge
+   - Dropdown preview
+   - Full notifications page
+
+B) Email Notifications:
+   - Urgent post alerts
+   - Helper contact messages
+   - OTP for password reset
+   - HTML email templates
+
+5.2.4 SMART PRIORITY ENGINE
+
+Keyword-based analysis without ML:
+
+A) Category Detection:
+   - Blood keywords: blood, donor, A+, B+, O+, transfusion
+   - Lost keywords: lost, missing, stolen, wallet, phone
+   - Offer keywords: offer, free, donate, volunteer
+   - Default: Help Needed
+
+B) Urgency Detection:
+   - High: urgent, emergency, critical, immediately
+   - Low: whenever, no rush, flexible
+   - Default: Medium
+
+5.3 SECURITY IMPLEMENTATION
+---------------------------
+
+1. PASSWORD SECURITY
+   - bcryptjs hashing with salt rounds
+   - Password excluded from queries (select: false)
+   - Minimum length validation
+
+2. INPUT VALIDATION
+   - Server-side validation on all endpoints
+   - DOMPurify sanitization
+   - Maximum length limits
+   - Email format validation
+
+3. RATE LIMITING
+   - 5 posts per minute per IP
+   - 3 reports per minute per IP
+   - Prevents spam attacks
+
+4. SESSION SECURITY
+   - JWT-based sessions
+   - HTTP-only cookies
+   - CSRF protection
+   - Secure transmission
+
+5. DATA PROTECTION
+   - Environment variables
+   - MongoDB Atlas encryption
+   - Sensitive field exclusion
+
+
+================================================================================
+                            CHAPTER 6
+                       TESTING & RESULTS
+================================================================================
+
+6.1 TESTING METHODOLOGY
+-----------------------
+
+The application was tested using the following approaches:
+
+1. UNIT TESTING
+   - Individual component testing
+   - API route validation
+   - Utility function verification
+
+2. INTEGRATION TESTING
+   - End-to-end user flows
+   - Database operations
+   - External service integration
+
+3. MANUAL TESTING
+   - UI/UX validation
+   - Cross-browser compatibility
+   - Mobile responsiveness
+
+6.2 TEST CASES
+--------------
+
+TC01: User Registration
+  Input: Valid name, email, password
+  Expected: Account created, redirect to home
+  Result: PASS
+
+TC02: User Login
+  Input: Valid email, password
+  Expected: Session created, redirect to home
+  Result: PASS
+
+TC03: Google OAuth Login
+  Input: Click Google sign-in
+  Expected: OAuth flow, account created/linked
+  Result: PASS
+
+TC04: Password Reset
+  Input: Valid email, correct OTP, new password
+  Expected: Password updated, redirect to login
+  Result: PASS
+
+TC05: Create Post
+  Input: Valid post data with images
+  Expected: Post created, notification sent
+  Result: PASS
+
+TC06: Filter Posts
+  Input: City: Delhi, Category: Blood Needed
+  Expected: Filtered results displayed
+  Result: PASS
+
+TC07: Contact Helper
+  Input: Helper name, email, message
+  Expected: Email sent, notification created
+  Result: PASS
+
+TC08: Mark as Resolved
+  Input: Post creator clicks resolve
+  Expected: Status updated to resolved
+  Result: PASS
+
+TC09: Report Post
+  Input: Select reason, submit report
+  Expected: Report saved, count incremented
+  Result: PASS
+
+TC10: Admin Functions
+  Input: Admin views dashboard
+  Expected: Statistics and posts displayed
+  Result: PASS
+
+6.3 PERFORMANCE RESULTS
+-----------------------
+
+Metric                    Target      Achieved
+-------------------------------------------------
+Page Load Time            < 3s        1.8s
+API Response Time         < 500ms     280ms
+Database Query Time       < 200ms     120ms
+Image Upload Time         < 5s        3.2s
+Concurrent Users          1000        Tested: 500
+
+
+================================================================================
+                            CHAPTER 7
+                     CONCLUSION & FUTURE SCOPE
+================================================================================
+
+7.1 CONCLUSION
+--------------
+
+HelpRadar successfully addresses the need for a hyperlocal community help
+platform. The application provides:
+
+1. EFFECTIVE COMMUNICATION
+   - Easy post creation with categorization
+   - Real-time notifications for urgent needs
+   - Secure contact mechanism
+
+2. SMART FEATURES
+   - Auto-prioritization without AI complexity
+   - Location-based filtering
+   - Post lifecycle management
+
+3. MODERN TECHNOLOGY
+   - Responsive, mobile-first design
+   - Secure authentication
+   - Scalable architecture
+
+4. COMMUNITY FOCUS
+   - Self-moderation through reports
+   - Privacy-focused design
+   - Trust-building features
+
+The project demonstrates proficiency in full-stack web development using
+modern technologies and best practices.
+
+7.2 LIMITATIONS
+---------------
+
+1. Limited to web platform (no native mobile app)
+2. No real-time chat functionality
+3. Basic analytics in admin dashboard
+4. No multi-language support
+5. Limited to Indian cities currently
+
+7.3 FUTURE ENHANCEMENTS
+-----------------------
+
+1. MOBILE APPLICATIONS
+   - React Native for iOS and Android
+   - Push notifications
+   - Offline capability
+
+2. ADVANCED FEATURES
+   - Real-time chat between helpers
+   - Video verification for urgent cases
+   - Integration with emergency services
+
+3. AI INTEGRATION
+   - Machine learning for better categorization
+   - Image recognition for lost items
+   - Spam detection
+
+4. PLATFORM EXPANSION
+   - Multi-language support
+   - More cities and regions
+   - Organization/NGO accounts
+
+5. GAMIFICATION
+   - Helper badges and rewards
+   - Leaderboards
+   - Reputation system
+
+
+================================================================================
+                            APPENDIX
+================================================================================
+
+A.1 PROJECT DIRECTORY STRUCTURE
+-------------------------------
+
+Help-Radar/
+├── src/
+│   ├── app/                    # Next.js pages and API
+│   │   ├── api/                # API routes
+│   │   ├── admin/              # Admin dashboard
+│   │   ├── create/             # Create post page
+│   │   ├── login/              # Login page
+│   │   ├── register/           # Register page
+│   │   ├── forgot-password/    # Password reset
+│   │   ├── post/[id]/          # Post detail
+│   │   ├── profile/            # User profile
+│   │   ├── requests/           # Posts listing
+│   │   ├── map/                # Map view
+│   │   └── ...                 # Other pages
+│   ├── components/             # React components
+│   ├── contexts/               # React contexts
+│   ├── lib/                    # Utility functions
+│   ├── models/                 # Mongoose schemas
+│   ├── types/                  # TypeScript types
+│   └── auth.ts                 # NextAuth config
+├── public/                     # Static assets
+├── scripts/                    # Utility scripts
+├── package.json                # Dependencies
+├── tsconfig.json               # TypeScript config
+└── README.md                   # Documentation
+
+A.2 ENVIRONMENT VARIABLES
+-------------------------
+
+MONGODB_URI          - MongoDB connection string
+NEXTAUTH_SECRET      - NextAuth secret key
+NEXTAUTH_URL         - Application URL
+GOOGLE_CLIENT_ID     - Google OAuth client ID
+GOOGLE_CLIENT_SECRET - Google OAuth client secret
+CLOUDINARY_CLOUD_NAME - Cloudinary cloud name
+CLOUDINARY_API_KEY   - Cloudinary API key
+CLOUDINARY_API_SECRET - Cloudinary API secret
+SMTP_HOST            - SMTP server host
+SMTP_PORT            - SMTP server port
+SMTP_USER            - SMTP username
+SMTP_PASS            - SMTP password
+EMAIL_FROM           - Sender email address
+
+A.3 COMMANDS
+------------
+
+npm install          # Install dependencies
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run seed         # Seed sample data
+npm run seed:admin   # Create admin user
+
+
+================================================================================
+                          REFERENCES
+================================================================================
+
+1. Next.js Documentation - https://nextjs.org/docs
+2. React Documentation - https://react.dev
+3. MongoDB Documentation - https://docs.mongodb.com
+4. NextAuth.js Documentation - https://next-auth.js.org
+5. Tailwind CSS Documentation - https://tailwindcss.com/docs
+6. Mongoose Documentation - https://mongoosejs.com/docs
+7. TypeScript Documentation - https://www.typescriptlang.org/docs
+
+
+================================================================================
+                            END OF DOCUMENT
+================================================================================

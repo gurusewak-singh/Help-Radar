@@ -92,7 +92,7 @@ export async function sendContactEmail(params: ContactEmailParams) {
                 </div>
                 
                 <div style="background: linear-gradient(135deg, #0d9488, #059669); padding: 20px; border-radius: 12px; margin: 25px 0;">
-                    <p style="color: rgba(255,255,255,0.9); font-size: 14px; margin: 0 0 10px 0;">MESSAGE FROM HELPER</p>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 14px; margin: 0 0 10px 0;">MESSAGE</p>
                     <p style="color: white; font-size: 16px; line-height: 1.6; margin: 0;">
                         ${message.replace(/\n/g, '<br>')}
                     </p>
