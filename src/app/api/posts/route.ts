@@ -46,8 +46,9 @@ export async function GET(request: NextRequest) {
 
         const skip = (Math.max(1, page) - 1) * limit;
 
-        // Build sort object
-        let sortObj: Record<string, number> = { createdAt: -1 };
+        // Build sort object - using 1 | -1 for proper mongoose typing
+        type SortOrder = 1 | -1;
+        let sortObj: { [key: string]: SortOrder } = { createdAt: -1 };
         if (sort === 'priority') {
             sortObj = { priority: -1, createdAt: -1 };
         } else if (sort === 'oldest') {

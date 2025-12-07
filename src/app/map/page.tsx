@@ -5,18 +5,24 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { ArrowLeft, List, MapPin, Heart, HelpCircle, Search, Gift, Navigation, Eye, Locate, Loader2, AlertCircle } from 'lucide-react';
 import CategoryBadge from '@/components/CategoryBadge';
+import { MapSkeleton } from '@/components/Skeletons';
+
+// Lazy load Leaflet CSS only when this page is loaded
+const loadLeafletCSS = () => {
+    if (typeof window !== 'undefined' && !document.querySelector('link[href*="leaflet"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        link.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+        link.crossOrigin = '';
+        document.head.appendChild(link);
+    }
+};
 
 // Dynamic import MapView to avoid SSR issues
 const MapView = dynamic(() => import('@/components/MapView'), {
     ssr: false,
-    loading: () => (
-        <div className="w-full h-[600px] bg-stone-100 rounded-2xl flex items-center justify-center border border-stone-200">
-            <div className="text-center">
-                <div className="w-10 h-10 border-3 border-stone-200 border-t-teal-600 rounded-full animate-spin mx-auto mb-3"></div>
-                <p className="text-sm text-stone-500">Loading map...</p>
-            </div>
-        </div>
-    )
+    loading: () => <MapSkeleton />
 });
 
 interface Post {
@@ -218,8 +224,11 @@ export default function MapPage() {
         }
     };
 
-    // Fetch posts
+    // Fetch posts and lazy load Leaflet CSS
     useEffect(() => {
+        // Lazy load Leaflet CSS
+        loadLeafletCSS();
+
         const fetchPosts = async () => {
             try {
                 const res = await fetch('/api/posts?limit=100');
