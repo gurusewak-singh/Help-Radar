@@ -294,65 +294,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes float-gentle {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        .animate-float-gentle {
-          animation: float-gentle 4s ease-in-out infinite;
-        }
-        
-        @keyframes float-gentle-reverse {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(6px); }
-        }
-        .animate-float-gentle-reverse {
-          animation: float-gentle-reverse 5s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.02); }
-        }
-        .animate-pulse-glow {
-          animation: pulse-glow 4s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.02); }
-        }
-        .animate-pulse-glow {
-          animation: pulse-glow 4s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 0.8; }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 5s ease-in-out infinite;
-        }
-        
-        @keyframes float-particle {
-          0%, 100% { transform: translateY(0); opacity: 0.3; }
-          50% { transform: translateY(-15px); opacity: 0.6; }
-        }
-        .animate-float-particle {
-          animation: float-particle 6s ease-in-out infinite;
-        }
-        
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-      `}</style>
     </div>
   );
 }
+
